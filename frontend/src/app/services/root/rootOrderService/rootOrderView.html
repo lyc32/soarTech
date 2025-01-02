@@ -1,0 +1,247 @@
+<div class="CN_card_unLock col_9 r43" style="margin-right:auto;">
+  <div class="ps_1 pt_1 pe_1 pd_1">
+    <div class="col_10 div_end">
+      <button class="CN_button_success div_inline l7" (click)="showCreateOrderView()"><i class="bi bi-clipboard-plus me_1"></i>{{'CREATE_ORDER' | translate}}</button>
+      <button class="CN_button_warning div_inline l7" (click)="showFilterView()"><i class="bi bi-search me_1"></i>{{'FILTER_ORDER' | translate}}</button>
+    </div>
+  </div>
+  <div class="pt_1 mb_1 overflow r37">
+    <div class="text_italic">
+      <div class="l5  div_center div_inline"></div>
+      <div class="l11 div_center div_inline">{{'ORDER_NUMBER' | translate}}</div>
+      <div class="l17 div_center div_inline">{{'ORDER_EMAIL'  | translate}}</div>
+      <div class="l15 div_center div_inline">{{'CLIENT_NAME'  | translate}}</div>
+      <div class="l8  div_center div_inline">{{'STATUS'       | translate}}</div>
+      <div class="l30 div_center div_inline">{{'ORDER_LINK'   | translate}}</div>
+      <div class="l15 div_center div_inline">{{'STOREHOUSE'   | translate}}</div>
+      <div class="l7  div_center div_inline">{{'ORDER_PRICE'  | translate}}</div>
+      <div class="l30 div_center div_inline">{{'DETAILS'      | translate}}</div>
+      <div class="l12 div_center div_inline">{{'CREATE_TIME'  | translate}}</div>
+    </div>
+    <div class="text_font" *ngFor="let order of orderList;  index as i">
+      <div class="l5  div_center div_inline">
+        <i class="bi bi-floppy2-fill text-success ms_1" (click)="updateOrder(i)"></i>
+        <i class="bi bi-lock-fill   ms_1" *ngIf="table=='inHistory'" (click)="showUnarchiveOrderView(i)"></i>
+        <i class="bi bi-unlock-fill ms_1" *ngIf="table=='inProcess'" (click)="showArchiveOrderView(i)"></i>
+        <i class="bi bi-dash-circle-fill text-danger  ms_1" (click)="showConfirmDeleteView(i)"></i>
+      </div>
+      <input  class="l11  CN_input" type="text" [(ngModel)] = "order.orderNumber">
+      <input  class="l17 CN_input" type="text" [(ngModel)] = "order.orderEmail" >
+      <input  class="l15 CN_input" type="text" [(ngModel)] = "order.clientName" >
+      <select class="l8  CN_input" type="text" [(ngModel)] = "order.state"      >
+        <option *ngFor = "let item of config.orderState | keyvalue" value="{{item.value}}">
+          {{item.value | translate}}
+        </option>
+      </select>
+      <input  class="l30 CN_input" type="text" [(ngModel)] = "order.orderLink"  >
+      <select class="l15 CN_input" type="text" [(ngModel)] = "order.storeHouse" >
+        <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+          {{storeHouse.name}}<span *ngIf="storeHouse.status == config.storeHouseState.suspend">(suspend)</span>
+        </option>
+      </select>
+      <input  class="l7  CN_input" type="text" [(ngModel)] = "order.totalPrice" >
+      <input  class="l30 CN_input" type="text" [(ngModel)] = "order.message"    >
+      <input  class="l12 CN_input" type="text" [(ngModel)] = "order.createTime" readonly>
+    </div>
+  </div>
+  <div class="pt_1 pb_1 ps_1 pe_1">
+    <div class="col_10 div_end" *ngIf="storeHouseList.length > 0 ">
+      <button class="CN_button_success l3" (click)="prePage()"><i class="bi bi-arrow-left"></i></button>
+      <label class="div_center l3">{{page}}</label>
+      <button class="CN_button_success l3" (click)="nextPage()"><i class="bi bi-arrow-right"></i></button>
+    </div>
+    <div class="col_10 div_end" *ngIf="storeHouseList.length == 0">
+      <button class="CN_button_disable l3" ><i class="bi bi-arrow-left"></i></button>
+      <label class="div_center l3">{{page}}</label>
+      <button class="CN_button_disable l3" ><i class="bi bi-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="filterView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeFilterView()"></i>
+    </div>
+    <div class="ps_2 pe_2">
+      <div class="col_9">
+        <div class="text_italic">{{'CLIENT_NAME' | translate}}</div>
+        <input class="CN_input col_10" id="clientName" type = "text" value="{{clientName}}">
+      </div>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="col_6 pe_1">
+        <div class="text_italic">{{'ORDER_NUMBER' | translate}}</div>
+        <input class="CN_input col_10" id="orderNumber" type = "text" value="{{orderNumber}}">
+      </div>
+      <div class="col_4 pe_1">
+        <div class="text_italic">{{'STATUS' | translate}}</div>
+        <select class="CN_input col_10" id="state" value="{{state}}" *ngIf="table=='inProcess'">
+          <option value="all">{{'all' | translate}}</option>
+          <option *ngFor="let item of config.orderState | keyvalue" value="{{item.value}}">
+            {{item.value | translate}}
+          </option>
+        </select>
+        <select class="CN_input col_10" id="state" value="{{state}}" *ngIf="table=='inHistory'">
+          <option value="all">{{'all' | translate}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="col_5 pe_1">
+        <div class="text_italic">{{'START_TIME' | translate}}</div>
+        <input class="CN_input col_10" id="startTime" type = "date" value="{{startTime}}">
+      </div>
+      <div class="col_5 pe_1">
+        <div class="text_italic">{{'END_TIME' | translate}}</div>
+        <input class="CN_input col_10" id="endTime" type = "date" value="{{endTime}}">
+      </div>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'STOREHOUSE' | translate}}</div>
+      <select class="CN_input col_8" id="storeHouseId" value="{{storeHouse}}">
+        <option value="all">{{'all' | translate}}</option>
+        <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+          {{storeHouse.name}}<span *ngIf="storeHouse.status == config.storeHouseState.suspend">{{'(suspend)' | translate}}</span>
+        </option>
+      </select>
+    </div>
+    <div class="mt_1 me_1 mb_1">
+      <div class="col_7 ps_2 mt_sm_1 r1">
+        <input class="div_inline" type="checkbox" id="type">
+        <p class="div_inline ms_1 text_italic">{{"Search_Archived_Order" | translate}}</p>
+      </div>
+      <div class="col_3 div_end mt_sm_1">
+        <button class="CN_button_success div_inline l6" (click)="setFilter()">{{'FILTER_ORDER' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="addOrderView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeCreateOrderView()"></i>
+    </div>
+    <div class="ps_2 pe_2">
+      <div class="col_9">
+        <div class="text_italic">{{'CLIENT_NAME' | translate}}</div>
+        <input class="CN_input col_10" id="newClientName" [(ngModel)]="order.clientName">
+      </div>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="col_6 pe_1">
+        <div class="text_italic">{{'ORDER_NUMBER' | translate}}</div>
+        <input class="CN_input col_10" id="newOrderNumber" [(ngModel)]="order.orderNumber">
+      </div>
+      <div class="col_4 pe_1">
+        <div class="text_italic">{{'STATUS' | translate}}</div>
+        <select class="CN_input col_10" id="newState" [(ngModel)]="order.state">
+          <option *ngFor="let item of config.orderState | keyvalue" value="{{item.value}}">
+            {{item.value | translate}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'ORDER_EMAIL'  | translate}}</div>
+      <input class="CN_input col_8" id="newOrderEmail" [(ngModel)]="order.orderEmail">
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'ORDER_LINK'  | translate}}</div>
+      <textarea class="CN_input col_10 r3" id="newOrderLink" [(ngModel)]="order.orderLink"></textarea>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="col_6">
+        <div class="text_italic">{{'STOREHOUSE' | translate}}</div>
+        <select class="CN_input col_10" id="newStoreHouse" [(ngModel)]="order.storeHouse">
+          <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+            {{storeHouse.name}}<span *ngIf="storeHouse.status == config.storeHouseState.suspend">{{'(suspend)' | translate}}</span>
+          </option>
+        </select>
+      </div>
+      <div class="col_4 ps_1">
+        <div class="text_italic">{{'ORDER_PRICE'  | translate}}</div>
+        <input class="CN_input col_10" id="newTotalPrice" type="number" [(ngModel)]="order.totalPrice">
+      </div>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'DETAILS'  | translate}}</div>
+      <textarea class="CN_input col_10 r3" id="newDetail" [(ngModel)]="order.message"></textarea>
+    </div>
+    <div class="mt_1 me_1 mb_1 div_end">
+      <button class="CN_button_success div_inline l6" (click)="saveOrderInProcess()">{{'CREATE_ORDER' | translate}}</button>
+      <button class="CN_button_success div_inline l6" (click)="saveOrderInHistory()" *ngIf="order.state == config.orderState.finished">{{'CREATE_ARCHIVE_ORDER' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="confirmArchiveView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div>{{order.orderNumber}}</div>
+      <div class="mt_sm_1">{{'ARCHIVE_CONFIRM'| translate}}</div>
+    </div>
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div class="col_4 div_start">
+        <button class="CN_button_warning l8" (click)="closeArchiveOrderView()">{{'ARCHIVE_NO' | translate}}</button>
+      </div>
+      <div class="col_4 div_end">
+        <button class="CN_button_danger l8" (click)="archiveOrder()">{{'ARCHIVE_YES' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="confirmUnarchiveView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div>{{order.orderNumber}}</div>
+      <div class="mt_sm_1">{{'UNARCHIVE_CONFIRM'| translate}}</div>
+    </div>
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div class="col_4 div_start">
+        <button class="CN_button_warning l8" (click)="closeUnarchiveOrderView()">{{'UNARCHIVE_NO' | translate}}</button>
+      </div>
+      <div class="col_4 div_end">
+        <button class="CN_button_danger l8" (click)="unarchiveOrder()">{{'UNARCHIVE_YES' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="confirmDeleteView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end r0">
+      <i class="bi bi-x-square text_success" (click)="closeConfirmDeleteView()" ></i>
+    </div>
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div>{{order.orderNumber}}</div>
+      <div class="mt_sm_1">{{'DELETE_ORDER_AND_ITEM_CONFIRM'| translate}}</div>
+    </div>
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div class="col_4 div_start">
+        <button class="CN_button_warning l8" (click)="deleteOrder()">{{'DELETE_ORDER_ONLY' | translate}}</button>
+      </div>
+      <div class="col_4 div_end">
+        <button class="CN_button_danger l8" (click)="deleteOrderAndItem()">{{'DELETE_ORDER_ITEM' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end r0">
+      <i class="bi bi-x-square text_success" style="display:none" id="popCloseButton" (click)="closePop()" ></i>
+    </div>
+    <div class="mb_1 ms_2 me_2">
+      <label>{{ message | translate}}</label>
+    </div>
+    <div class="mb_1 ms_1 me_1 r0">
+      <div class="progress" style="display: none" id="popProcessBar">
+        <div class="progress-bar" style="width:100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>

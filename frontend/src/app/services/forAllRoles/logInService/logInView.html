@@ -1,0 +1,93 @@
+<div class="CN_card text_font r24" *ngIf="type=='login'">
+  <div class="text_title div_center mt_3">{{"Welcome" | translate}}</div>
+  <p class="div_center mt_1 text_table text_italic">{{"Log in to continue" | translate}}</p>
+  <div class="ps_3 pe_3">
+    <div class="div_start mt_1">
+      <div>{{"NAME_OR_EMAIL" | translate}}</div>
+      <input class="CN_input col_10" type="text" name="username" id="username" [(ngModel)]="account.accountName" required>
+    </div>
+    <div class="div_start mt_1">
+      <div>{{"PASSWORD" | translate}}</div>
+      <input class="CN_input col_10" type="password" name="password" id="password" [(ngModel)]="account.password" required>
+    </div>
+    <div class="div_center mt_2">
+      <button class="CN_button_success_full col_4 r2" (click)="logIn()">{{"LOGIN" | translate}}</button>
+      <div class="col_1"></div>
+      <button class="CN_button_success_full col_4 r2" (click)="reset()" >{{"RESET" | translate}}</button>
+    </div>
+    <div class="div_center mt_2">
+      <p class="text_table text_italic" (click)="forgotPass()">{{"Forgot Password" | translate}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="CN_card text_font r24" *ngIf="type=='register'">
+  <div class="ps_1 pt_1 pe_1 pd_1">
+    <div class="col_2 div_start">
+      <button class="CN_button_success l3" (click)="goBack()"><i class="bi bi-arrow-left"></i></button>
+    </div>
+  </div>
+  <div class="ps_2 pt_0">
+    <div class="mt_2">
+      <div class="col_2 div_end mt_1 pe_1 text_italic">{{'ACCOUNT_NAME'  | translate}}</div>
+      <input class="col_6 CN_input me_1" id="AccountName" [(ngModel)]="account.accountName" >
+    </div>
+    <div class="mt_2">
+      <div class="col_2 div_end mt_1 pe_1 text_italic">{{'ACCOUNT_PHONE'  | translate}}</div>
+      <input class="col_6 CN_input" id="Phone" [(ngModel)]="account.phone" >
+    </div>
+    <div class="mt_2">
+      <div class="col_2 div_end mt_1 pe_1 text_italic">{{'ACCOUNT_EMAIL'  | translate}}</div>
+      <input class="col_6 CN_input" id="Email" [(ngModel)]="account.email" >
+    </div>
+    <div class="mt_2">
+      <div class="col_2 div_end mt_1 pe_1 text_italic">{{'PASSWORD'  | translate}}</div>
+      <input class="col_6 CN_input me_1" id = "newPass" name = "newPass" type = "password">
+    </div>
+    <div class="mt_1">
+      <div class="col_2 div_end mt_1 pe_1 text_italic">{{'CONFIRM_PASS'  | translate}}</div>
+      <input class="col_6 CN_input me_1" id = "confirm" name = "Confirm" type = "password">
+    </div>
+  </div>
+  <div class="pe_1 pb_2">
+    <div class="mt_2 div_end">
+      <button class="CN_button_success l7" (click)="createRoot()">{{'CREATE_ACCOUNT' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="CN_card text_font r11" *ngIf="type=='forgotPass'">
+  <div class="ps_1 pt_1 pe_1 pd_1">
+    <div class="col_2 div_start">
+      <button class="CN_button_success l3" (click)="goBack()"><i class="bi bi-arrow-left"></i></button>
+    </div>
+  </div>
+  <div class="ps_2 pe_2 pt_2">
+    <div class="text_italic">{{"Enter Email Id" | translate}}</div>
+  </div>
+  <div class="ps_2 pe_2 pt_1 mb_2">
+    <input class="CN_input col_10" id = "resetEmail" name = "resetEmail" type = "text">
+  </div>
+  <div class="ps_2 pe_1 mb_1 div_end">
+    <button class="CN_button_success l4" (click)="requestNewPass()">{{"SUBMIT" | translate}}</button>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end r0">
+      <i class="bi bi-x-square text_success" style="display:none" id="popCloseButton" (click)="closePop()" ></i>
+    </div>
+    <div class="mb_1 ms_2 me_2">
+      <label>{{ message | translate}}{{ " "+ userName}}</label>
+    </div>
+    <div class="mb_1 ms_1 me_1 r0">
+      <div class="progress" style="display: none" id="popProcessBar">
+        <div class="progress-bar" style="width:100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

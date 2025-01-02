@@ -1,0 +1,226 @@
+<div class="CN_card text_font">
+  <div class="ps_1 pt_1 pe_1 pd_1">
+    <div class="col_2 div_start">
+      <button class="CN_button_success l3" (click)="goBack()"><i class="bi bi-arrow-left"></i></button>
+    </div>
+    <div class="col_8 div_end">
+      <button class="CN_button_success div_inline l7" (click)="showCreateView()"><i class="bi bi-person-fill-add me_1"></i>{{'CREATE_ACCOUNT' | translate}}</button>
+      <button class="CN_button_warning div_inline l7" (click)="showFilterView()"><i class="bi bi-search me_1"></i>{{'FILTER_ACCOUNT' | translate}}</button>
+    </div>
+  </div>
+  <div class="ps_1 pe_1 pt_1 mb_1 border_bottom border_color_gray">
+    <div class="ps_1 pe_1">
+      <div class="col_8 div_center text_italic border_end border_color_gray">{{'ACCOUNT_INFO' | translate}}</div>
+      <div class="col_2 div_center text_italic">{{'ROLE' | translate}}</div>
+    </div>
+  </div>
+  <div class="r27 border_bottom border_color_gray text_table">
+    <div class="ps_1 pe_1" *ngFor="let account of accountList;  index as i">
+      <div class="CN_card_button r4 ps_1 pe_1 mb_1">
+        <div class="col_8 div_start mt_1 ps_1 overflow_x">
+          <div class="div_start border_bottom border_color_gray"><div class="l2_5 div_inline">{{'ACCOUNT_NAME'  | translate}}</div>{{" : " + account.accountName}}</div>
+          <div class="div_start border_bottom border_color_gray"><div class="l2_5 div_inline">{{'ACCOUNT_EMAIL' | translate}}</div>{{" : " + account.email}}</div>
+          <div class="div_start border_bottom border_color_gray"><div class="l2_5 div_inline">{{'ACCOUNT_PHONE' | translate}}</div>{{" : " + account.phone}}</div>
+        </div>
+        <div class="col_2 div_end border_start mt_1" (click)="showAccountDetailView(i)">
+          <div class="div_center"><i class="bi bi-person-circle"></i></div>
+          <div class="div_center">{{account.role | translate}}</div>
+          <div class="div_center text_danger " *ngIf="account.state=='suspend'">{{account.state | translate}}</div>
+          <div class="div_center text_success" *ngIf="account.state=='active'" >{{account.state | translate}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pt_1 pb_1 ps_1 pe_1">
+    <div class="col_10 div_end">
+      <button class="CN_button_success l3" (click)="prePage()"><i class="bi bi-arrow-left"></i></button>
+      <label class="div_center l3">{{page}}</label>
+      <button class="CN_button_success l3" (click)="nextPage()"><i class="bi bi-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="filterView">
+  <div class="CN_pop_card text_font l20">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeFilterView()"></i>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'ACCOUNT_NAME'  | translate}}</div>
+      <input class="CN_input col_10" id = "filterAccountName" type = "text" value="{{filterAccountName}}">
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'ACCOUNT_EMAIL' | translate}}</div>
+      <input class="CN_input col_10" id = "filterAccountEmail" type = "text" value="{{filterAccountEmail}}">
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'ROLE' | translate}}</div>
+      <select class="CN_input col_10" id = "filterAccountRole" value="{{filterAccountRole}}">
+        <option value="all">{{'all' | translate}}</option>
+        <option *ngFor = "let item of config.accountRole | keyvalue" value="{{item.value}}">
+          {{item.value | translate}}
+        </option>
+      </select>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'STATUS' | translate}}</div>
+      <select class="CN_input col_10" id = "filterAccountState" value="{{filterAccountState}}">
+        <option value="all">{{'all' | translate}}</option>
+        <option *ngFor = "let item of config.accountState | keyvalue" value="{{item.value}}">
+          {{item.value | translate}}
+        </option>
+      </select>
+    </div>
+    <div class="pe_1 mt_2 mb_1 div_end">
+      <button class="CN_button_success l6" (click)="setFilter()">{{'FILTER_ACCOUNT' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="createAccountView">
+  <div class="CN_pop_card text_font l20">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeCreateView()"></i>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'ACCOUNT_NAME'  | translate}}</div>
+      <input class="CN_input col_10" id = "newAccountName" type = "text" [(ngModel)] = "account.accountName">
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'ACCOUNT_PHONE' | translate}}</div>
+      <input class="CN_input col_10" id = "newPhone"       type = "text" [(ngModel)] = "account.phone">
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'ACCOUNT_EMAIL' | translate}}</div>
+      <input class="CN_input col_10" id = "newEmail"       type = "text" [(ngModel)] = "account.email">
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'ROLE' | translate}}</div>
+      <select class="CN_input col_10" id = "newRole"       type = "text" [(ngModel)] = "account.role">
+        <option *ngFor = "let item of config.accountRole | keyvalue" value="{{item.value}}">
+          {{item.value | translate}}
+        </option>
+      </select>
+    </div>
+    <div class="pe_1 mt_2 mb_1 div_end">
+      <button class="CN_button_success div_inline l6" (click)="createAccount()">{{'CREATE_ACCOUNT' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="accountDetailView">
+  <div class="CN_pop_card text_font">
+    <div class="border_bottom border_color_gray">
+      <div class="col_9 div_center text_italic pt_1">
+        {{userName}}
+      </div>
+      <div class="col_1 pt_1 pe_1 div_end">
+        <i class="bi bi-x-square text_success" (click)="closeAccountDetailView()"></i>
+      </div>
+    </div>
+    <div class="ps_2 pe_2 pb_2 pt_1">
+      <div class="mt_1">
+        <div class="col_2 div_end mt_1 pe_1 text_italic">{{'ACCOUNT_NAME'  | translate}}</div>
+        <input class="col_7 CN_input_read_only" value="{{account.accountName}}" readonly>
+      </div>
+      <div class="mt_1">
+        <div class="col_2 div_end mt_1 pe_1 text_italic">{{'ROLE'  | translate}}</div>
+        <input class="col_3 CN_input_read_only" value="{{account.role | translate}}"        readonly>
+        <div class="col_2 div_end mt_1 pe_1 text_italic">{{'STATUS'  | translate}}</div>
+        <input class="col_3 CN_input_read_only" value="{{account.state | translate}}"       readonly>
+      </div>
+      <div class="mt_1">
+        <div class="col_2 div_end mt_1 pe_1 text_italic">{{'ACCOUNT_PHONE'  | translate}}</div>
+        <input class="col_6 CN_input_read_only" value="{{account.phone}}"       readonly>
+      </div>
+      <div class="mt_1">
+        <div class="col_2 div_end mt_1 pe_1 text_italic">{{'ACCOUNT_EMAIL'  | translate}}</div>
+        <input class="col_6 CN_input_read_only" value="{{account.email}}"       readonly>
+      </div>
+      <div class="mt_1">
+        <div class="col_2 div_end mt_1 pe_1 text_italic">{{'ACCOUNT_ADDRESS'  | translate}}</div>
+        <input class="col_8 CN_input_read_only" value="{{account.addressLine1}}" placeholder="{{'address_line1' | translate}}"  readonly>
+      </div>
+      <div class="mt_1">
+        <div class="col_2 div_end   pe_1 text_italic"></div>
+        <input class="col_6 CN_input_read_only" value="{{account.addressLine2}}" placeholder="{{'address_line2' | translate}}"  readonly>
+      </div>
+      <div class="mt_1">
+        <div class="col_2 div_end   pe_1 text_italic"></div>
+        <input class="col_4 CN_input_read_only me_1" value="{{account.addressCity}}"   placeholder="{{'address_city' | translate}}"  readonly>
+        <input class="col_3 CN_input_read_only" value="{{account.addressState}}"  placeholder="{{'address_state' | translate}}" readonly>
+      </div>
+      <div class="mt_1">
+        <div class="col_2 div_end   pe_1 text_italic"></div>
+        <input class="col_5 CN_input_read_only" value="{{account.addressCountry}}" placeholder="{{'address_country' | translate}}" readonly>
+      </div>
+      <div class="mt_1 mb_1">
+        <div class="col_2 div_end   pe_1 text_italic"></div>
+        <input class="col_4 CN_input_read_only" value="{{account.addressZipCode}}" placeholder="{{'address_zipCode' | translate}}" readonly>
+        <div class="col_4 div_end r2">
+          <div class="ps_3" *ngIf="account.role != config.accountRole.admin && account.role != config.rootRole">
+            <div class="ps_1" *ngIf = "account.state==config.accountState.active">
+              <button class="CN_button_success l7 " (click)="showResetAccountPasswordView()">{{'ACCOUNT_PASS' | translate}}</button>
+              <button class="CN_button_warning l7 mt_1" (click)="suspendAccount()">{{'ACCOUNT_SUSPEND' | translate}}</button>
+            </div>
+            <div class="ps_1" *ngIf = "account.state==config.accountState.suspend">
+              <button class="CN_button_success l7" (click)="activeAccount()">{{'ACCOUNT_ACTIVE' | translate}}</button>
+              <button class="CN_button_danger  l7 mt_1" (click)="showDeleteConfirmView()">{{'ACCOUNT_DELETE' | translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="resetAccountPasswordView">
+  <div class="CN_pop_card text_font l20">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeResetAccountPasswordView()"></i>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'NEW_PASSWORD' | translate}}</div>
+      <input class="CN_input col_10" id="newPassword" name="newPassword" type="password">
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'CONFIRM_PASS' | translate}}</div>
+      <input class="CN_input col_10" id="confirmPassword" name="confirmPassword" type="password">
+    </div>
+    <div class="pe_1 mt_2 mb_1 div_end">
+      <button class="CN_button_success l6" (click)="resetAccountPassword()">{{'ACCOUNT_RESET_PASS' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="deleteConfirmView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div>{{'DELETE_ACCOUNT_CONFIRM'| translate}}</div>
+    </div>
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div class="col_4 div_start">
+        <button class="CN_button_success l5" (click)="closeDeleteConfirmView()">{{'DELETE_NO' | translate}}</button>
+      </div>
+      <div class="col_4 div_end">
+        <button class="CN_button_danger l5" (click)="deleteAccount()">{{'DELETE_YES' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end r0">
+      <i class="bi bi-x-square text_success" style="display:none" id="popCloseButton" (click)="closePop()" ></i>
+    </div>
+    <div class="mb_1 ms_2 me_2">
+      <label>{{ message | translate}}</label>
+    </div>
+    <div class="mb_1 ms_1 me_1 r0">
+      <div class="progress" style="display: none" id="popProcessBar">
+        <div class="progress-bar" style="width:100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>

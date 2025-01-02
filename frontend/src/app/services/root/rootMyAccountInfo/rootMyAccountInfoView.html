@@ -1,0 +1,124 @@
+<div class="CN_card_unLock text_font col_9 r43" style="margin-right:auto;">
+  <div class="col_5 div_block border_full border_color_gray round mt_2 ms_2">
+    <div class="ps_1 pe_1 pt_1">
+      <div class="col_3 div_end text_italic pe_1">
+        {{"ACCOUNT_NAME" | translate}}
+      </div>
+      <div class="col_7 div_start overflow_x">
+        {{": " + account.accountName}}
+      </div>
+    </div>
+    <div class="ps_1 pe_1 pt_1">
+      <div class="col_3 div_end text_italic pe_1">
+        {{"ACCOUNT_ROLE" | translate}}
+      </div>
+      <div class="col_7 div_start">
+        {{": "}}{{account.role | translate}}
+      </div>
+    </div>
+    <div class="ps_1 pe_1 pt_1 pb_1">
+      <div class="col_3 div_end text_italic pe_1">
+        {{"ACCOUNT_PASS" | translate}}
+      </div>
+      <div class="col_7 div_start ps_1">
+        <button class="CN_button_success l5" (click)="showResetPasswordView()">{{"ACCOUNT_RESET_PASS" | translate}}</button>
+      </div>
+    </div>
+  </div>
+  <div class="col_5 ps_1 pe_1 mt_2">
+    <div class="col_9 text_middle text_italic border_bottom border_color_gray ps_2">{{"NAME" | translate}}</div>
+    <div class="col_4 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"first_name" | translate}}</div>
+      <input class="CN_input col_10" [(ngModel)] = "account.firstName" type="text">
+    </div>
+    <div class="col_2 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"middle_name" | translate}}</div>
+      <input class="CN_input col_10" [(ngModel)] = "account.middleName" type="text">
+    </div>
+    <div class="col_3 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"last_name" | translate}}</div>
+      <input class="CN_input col_10" [(ngModel)] = "account.lastName" type="text">
+    </div>
+    <div class="col_9 text_middle text_italic border_bottom border_color_gray ps_2 mt_3">{{"CONTACT_INFO" | translate}}</div>
+    <div class="col_10 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"ACCOUNT_PHONE" | translate}}</div>
+      <input class="CN_input col_7" id="Phone" [(ngModel)] = "account.phone" type="text">
+    </div>
+    <div class="col_10 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"ACCOUNT_EMAIL" | translate}}</div>
+      <input class="CN_input col_7" id="Email" [(ngModel)] = "account.email" type="text">
+    </div>
+  </div>
+  <div class="col_5 ps_1 pe_1 mt_2">
+    <div class="col_9 text_middle text_italic border_bottom border_color_gray ps_2">{{"ACCOUNT_ADDRESS" | translate}}</div>
+    <div class="col_10 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"address_line1" | translate}}</div>
+      <input class="CN_input col_9" [(ngModel)] = "account.addressLine1" type="text">
+    </div>
+    <div class="col_10 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"address_line2" | translate}}</div>
+      <input class="CN_input col_8" [(ngModel)] = "account.addressLine2" type="text">
+    </div>
+    <div class="col_4 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"address_city" | translate}}</div>
+      <input class="CN_input col_10" [(ngModel)] = "account.addressCity" type="text">
+    </div>
+    <div class="col_4 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"address_state" | translate}}</div>
+      <input class="CN_input col_10" [(ngModel)] = "account.addressState" type="text">
+    </div>
+    <div class="col_10 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"address_country" | translate}}</div>
+      <input class="CN_input col_5" [(ngModel)] = "account.addressCountry" type="text">
+    </div>
+    <div class="col_4 ms_1 mt_2">
+      <div class="text_italic ps_1">{{"address_zipCode" | translate}}</div>
+      <input class="CN_input col_10" [(ngModel)] = "account.addressZipCode" type="text">
+    </div>
+  </div>
+
+  <div class="pt_2 pb_1 ps_1 pe_2">
+    <div class="col_10 div_end">
+      <button class="CN_button_success l7" (click)="update()">{{'UPDATE_ACCOUNT' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="resetPasswordView">
+  <div class="CN_pop_card text_font l20">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeResetPasswordView()"></i>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'OLD_PASSWORD' | translate}}</div>
+      <input class="CN_input col_10" id="oldPass" type="password">
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'NEW_PASSWORD' | translate}}</div>
+      <input class="CN_input col_10" id="newPass" type="password">
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'CONFIRM_PASS' | translate}}</div>
+      <input class="CN_input col_10" id="confirm" type="password">
+    </div>
+    <div class="pe_1 mt_2 mb_1 div_end">
+      <button class="CN_button_success l6" (click)="resetPassword()">{{'ACCOUNT_RESET_PASS' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end r0">
+      <i class="bi bi-x-square text_success" style="display:none" id="popCloseButton" (click)="closePop()" ></i>
+    </div>
+    <div class="mb_1 ms_2 me_2">
+      <label>{{ message | translate}}</label>
+    </div>
+    <div class="mb_1 ms_1 me_1 r0">
+      <div class="progress" style="display: none" id="popProcessBar">
+        <div class="progress-bar" style="width:100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>

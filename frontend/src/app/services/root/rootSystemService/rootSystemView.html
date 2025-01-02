@@ -1,0 +1,45 @@
+<div class="CN_card_unLock col_9 r43" style="margin-right:auto;">
+  <div class="col_5 r21 pt_2 fst-italic">
+    <div class="ms_2">{{cpuName}}</div>
+    <div class="ms_2 mb_2">{{"core" | translate}}{{': ' + coreNumber + ' '}}{{"processor" | translate}}{{ ': ' + processNumber}}</div>
+    <canvas id="CPU"></canvas>
+  </div>
+  <div class="col_5 r21 pt_2 fst-italic">
+    <div class="col_4 ps_2 mb_2">
+      <div class="div_inline col_3 div_start">{{"ram" | translate}}</div>
+      <div class="div_inline">{{":"}}</div>
+      <div class="div_inline col_5 div_end">{{memoryTotal + "GB"}}</div>
+      <div class="div_inline col_3 div_start">{{"free" | translate}}</div>
+      <div class="div_inline">{{":"}}</div>
+      <div class="div_inline col_5 div_end">{{mempryAvailable + "GB"}}</div>
+    </div>
+    <canvas id="memory"></canvas>
+  </div>
+  <div class="col_3 r21 pt_2">
+    <canvas id="disk"></canvas>
+  </div>
+  <div class="col_3 r21 pt_5 fst-italic">
+    <div class="div_inline col_3 div_start">{{"storage" | translate}}</div>
+    <div class="div_inline">{{":"}}</div>
+    <div class="div_inline col_5 div_end">{{diskTotal + "b"}}</div>
+    <div class="div_inline col_3 div_start">{{"available" | translate}}</div>
+    <div class="div_inline">{{":"}}</div>
+    <div class="div_inline col_5 div_end">{{diskFree + "b"}}</div>
+  </div>
+  <div class="col_3 r21 pb_2 pt_3 div_center">
+    <button class="CN_button_success l10 r2 mt_1" (click)="stopMonitor()"  *ngIf="isStop == false">{{"Stop_Monitor" | translate}}</button>
+    <button class="CN_button_success l10 r2 mt_1" (click)="startMonitor()" *ngIf="isStop == true">{{"Start_Monitor" | translate}}</button>
+    <button class="CN_button_warning l10 r2 mt_1" (click)="refresh()">{{"Restart_Server" | translate}}</button>
+    <button class="CN_button_danger  l10 r2 mt_1" (click)="close()" >{{"Close_Server" | translate}}</button>
+    <button class="CN_button_danger  l10 r2 mt_1" (click)="exit()">{{"Exist_Server" | translate}}</button>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+  <div class="CN_pop_card text_font r4">
+    <div class="mb_1 ms_2 me_2 mt_2 div_center">
+      <div>{{ message1 | translate}}</div>
+      <div class="text_table">{{ message2 | translate}}{{" " + t + ""}}{{message3 | translate}}</div>
+    </div>
+  </div>
+</div>

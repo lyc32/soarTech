@@ -1,0 +1,61 @@
+<div class="CN_card text_font">
+    <div class="ps_1 pt_1 pe_1 pd_1">
+        <div class="col_2 div_start">
+            <button class="CN_button_success l3" (click)="goBack()"><i class="bi bi-arrow-left"></i></button>
+        </div>
+    </div>
+    <div class="ps_2 pe_2 pb_1 border_bottom border_color_gray">
+        <div class="col_7 text_table text_italic ms_1 mt_1">{{'Input_StoreHouse' | translate}}</div>
+        <select class="CN_input col_9" id="StoreHouse"  [(ngModel)]="storeHouseName">
+            <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+                {{storeHouse.name}}
+            </option>
+        </select>
+        <div class="col_7 text_table text_italic ms_1 mt_1">{{'Input_File' | translate}}</div>
+        <input class="CN_input col_9 me_1 pt_sm_1" type="file" accept=".xls, .xlsx" id="excelFile" (change)="analyzeFile($event)">
+    </div>
+    <div class="r21 border_bottom border_color_gray div_start overflow_y ps_1 pe_1 pt_1">
+        <p *ngIf="check == true && (orderList1.length > 0 || orderList2.length > 0)">{{"get "}}{{orderList1.length + orderList2.length}}{{" order(s) from the input file"}}</p>
+        <p *ngIf="check == true && itemList.length > 0">{{"get "}}{{itemList.length }}{{" item(s) from the input file" }}</p>
+        <div *ngIf="errorIndex.length != 0">
+            <p class="text_danger mt_0" *ngFor="let line of errorIndex;  index as i">
+                [ERROR]{{"line1" | translate}}{{line}}{{"line2" | translate}}{{" "}}{{errorList[i] | translate}}
+            </p>
+        </div>
+    </div>
+    <div class="mt_1 me_1 mb_1 div_end">
+        <button class="CN_button_success div_inline l6" *ngIf="storeHouseList.length > 0 && check == true" (click)="createOrders()">{{'CREATE_ORDER' | translate}}</button>
+        <button class="CN_button_disable div_inline l6" *ngIf="storeHouseList.length == 0 || check  == false">{{'CREATE_ORDER' | translate}}</button>
+    </div>
+</div>
+
+<div class="modal-wrapper" id="logView">
+    <div class="CN_pop_card text_font div_center">
+        <div class="mt_1 me_1 div_end r0">
+            <i class="bi bi-x-square text_success" style="display:none" id="logCloseButton" (click)="closeLog()" ></i>
+        </div>
+        <textarea class="col_10 border_top border_color_gray cardBackGround mt_1 r20 overflow_y text_table"
+                  style="color:white;border-radius:0 0 0.5rem 0.5rem;"
+                  id="logText"
+                  value="{{log}}"
+        >
+        </textarea>
+    </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+    <div class="CN_pop_card text_font">
+        <div class="mt_1 me_1 div_end r0">
+            <i class="bi bi-x-square text_success" style="display:none" id="popCloseButton" (click)="closePop()" ></i>
+        </div>
+        <div class="mb_1 ms_2 me_2">
+            <label>{{ message | translate}}</label>
+        </div>
+        <div class="mb_1 ms_1 me_1 r0">
+            <div class="progress" style="display: none" id="popProcessBar">
+                <div class="progress-bar" style="width:100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+

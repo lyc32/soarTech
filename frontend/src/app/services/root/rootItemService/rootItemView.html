@@ -1,0 +1,332 @@
+<div class="CN_card_unLock col_9 r43" style="margin-right:auto;">
+  <div class="ps_1 pt_1 pe_1 pd_1">
+    <div class="col_10 div_end">
+      <button class="CN_button_success div_inline l7" (click)="showCreateItemView()"><i class="bi bi-clipboard-plus me_1"></i>{{'CREATE_ITEM' | translate}}</button>
+      <button class="CN_button_warning div_inline l7" (click)="showFilterView()"><i class="bi bi-search me_1"></i>{{'FILTER_ITEM' | translate}}</button>
+    </div>
+  </div>
+  <div class="pt_1 mb_1 overflow r37">
+    <div class="text_italic">
+      <div class="l5  div_center div_inline"></div>
+      <div class="l20 div_center div_inline">{{'ITEM_NAME'    | translate}}</div>
+      <div class="l9  div_center div_inline">{{'SERIAL_NO'    | translate}}</div>
+      <div class="l9  div_center div_inline">{{'ORDER_NO'     | translate}}</div>
+      <div class="l8  div_center div_inline">{{'STATUS'       | translate}}</div>
+      <div class="l15 div_center div_inline">{{'IMPORTER'     | translate}}</div>
+      <div class="l12 div_center div_inline">{{'IMPORT_TIME'  | translate}}</div>
+      <div class="l15 div_center div_inline">{{'STOREHOUSE'   | translate}}</div>
+      <div class="l10 div_center div_inline">{{'POSITION'     | translate}}</div>
+      <div class="l7  div_center div_inline">{{'ITEM_PRICE'   | translate}}</div>
+      <div class="l15 div_center div_inline">{{'EXPORTER'     | translate}}</div>
+      <div class="l12 div_center div_inline">{{'EXPORT_TIME'  | translate}}</div>
+      <div class="l10 div_center div_inline">{{'CARRIER'      | translate}}</div>
+      <div class="l15 div_center div_inline">{{'TRACK_NUMBER' | translate}}</div>
+    </div>
+    <div class="text_font" *ngFor="let item of itemList;  index as i">
+      <div class="l5  div_center div_inline">
+        <i class="bi bi-floppy2-fill text-success m-1" (click)="updateItem(i)"></i>
+        <i class="bi bi-lock-fill m-1"   *ngIf="table=='inHistory'" (click)="showUnarchiveItemView(i)"></i>
+        <i class="bi bi-unlock-fill m-1" *ngIf="table=='inProcess'" (click)="showArchiveItemView(i)"  ></i>
+        <i class="bi bi-dash-circle-fill text-danger m-1" (click)="showDeleteItemView(i)"></i>
+      </div>
+      <input  class="l20 CN_input" type="text" [(ngModel)] = "item.itemName"     >
+      <input  class="l9  CN_input" type="text" [(ngModel)] = "item.serialNumber" >
+      <input  class="l9  CN_input" type="text" [(ngModel)] = "item.orderNumber"  >
+      <select class="l8  CN_input" type="text" [(ngModel)] = "item.state"        >
+        <option *ngFor = "let item of config.itemState | keyvalue" value="{{item.value}}">
+          {{item.value | translate}}
+        </option>
+      </select>
+      <input  class="l15 CN_input" type="text" [(ngModel)] = "item.importerName" >
+      <input  class="l12 CN_input" type="text" [(ngModel)] = "item.importTime"   >
+      <select class="l15 CN_input" type="text" [(ngModel)] = "item.storeHouse"   >
+        <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+          {{storeHouse.name}}<span *ngIf="storeHouse.status == config.storeHouseState.suspend">(suspend)</span>
+        </option>
+      </select>
+      <input  class="l10 CN_input" type="text" [(ngModel)] = "item.position"     >
+      <input  class="l7  CN_input" type="number" [(ngModel)] = "item.price"      >
+      <input  class="l15 CN_input" type="text" [(ngModel)] = "item.exporterName" >
+      <input  class="l12 CN_input" type="text" [(ngModel)] = "item.exportTime" >
+      <input  class="l10 CN_input" type="text" [(ngModel)] = "item.carrier"      >
+      <input  class="l15 CN_input" type="text" [(ngModel)] = "item.trackNumber"  >
+    </div>
+  </div>
+  <div class="pt_1 pb_1 ps_1 pe_1">
+    <div class="col_10 div_end" *ngIf="storeHouseList.length > 0 ">
+      <button class="CN_button_success l3" (click)="prePage()"><i class="bi bi-arrow-left"></i></button>
+      <label class="div_center l3">{{page}}</label>
+      <button class="CN_button_success l3" (click)="nextPage()"><i class="bi bi-arrow-right"></i></button>
+    </div>
+    <div class="col_10 div_end" *ngIf="storeHouseList.length == 0">
+      <button class="CN_button_disable l3" ><i class="bi bi-arrow-left"></i></button>
+      <label class="div_center l3">{{page}}</label>
+      <button class="CN_button_disable l3" ><i class="bi bi-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="filterView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeFilterView()"></i>
+    </div>
+    <div class="ps_2 pe_2">
+      <div class="mt_0">
+        <div class="text_italic">{{'ITEM_NAME' | translate}}</div>
+        <input class="CN_input col_9" id="filterItemName" type = "text" value="{{filterItemName}}">
+      </div>
+      <div class="mt_1">
+        <div class="col_6 pe_1">
+          <div class="text_italic">{{'ORDER_NO'  | translate}}</div>
+          <input class="CN_input col_10"  id="filterOrderNumber" type = "text" value="{{filterOrderNumber}}">
+        </div>
+        <div class="col_4">
+          <div class="text_italic">{{'STATUS'  | translate}}</div>
+          <select class="CN_input col_10"  id="filterState" [(ngModel)]="filterViewState">
+            <option value="all">{{'all' | translate}}</option>
+            <option *ngFor="let state of config.itemState | keyvalue" value="{{state.value}}">
+              {{state.value | translate}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="mt_1">
+        <div class="col_7" >
+          <div class="text_italic">{{'importer' | translate}}</div>
+          <input class="CN_input col_10" id="filterImporterName" type="text" value="{{filterImporterName}}" *ngIf="filterViewState != config.itemState.initialize">
+          <input class="CN_input_read_only col_10" id="filterImporterName"  type="text" value="-" *ngIf="filterViewState == config.itemState.initialize" readonly>
+        </div>
+      </div>
+      <div class="mt_1">
+        <div class="col_6 pe_1" >
+          <div class="text_italic">{{'SERIAL_NO'  | translate}}</div>
+          <input class="CN_input col_10" id="filterSerialNumber" type="text" value="{{filterSerialNumber}}" *ngIf="filterViewState != config.itemState.initialize">
+          <input class="CN_input_read_only col_10" id="filterSerialNumber"  type="text" value="-" *ngIf="filterViewState == config.itemState.initialize" readonly>
+        </div>
+      </div>
+      <div class="mt_1">
+        <div class="col_6 pe_1">
+          <div class="text_italic">{{'ITEM_REPO'  | translate}}</div>
+          <select class="CN_input col_10" id="filterStoreHouse" name="filterStoreHouse" value="{{filterStoreHouse}}">
+            <option value="all">{{'all' | translate}}</option>
+            <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+              {{storeHouse.name}}<span *ngIf="storeHouse.status == config.storeHouseState.suspend">{{'(suspend)' | translate}}</span>
+            </option>
+          </select>
+        </div>
+        <div class="col_4">
+          <div class="text_italic">{{'POSITION'  | translate}}</div>
+          <input class="CN_input col_10" id = "filterPosition" name = "filterPosition" type = "text" value="{{filterPosition}}"  *ngIf="filterViewState  != config.itemState.initialize">
+          <input class="CN_input_read_only col_10" id = "filterPosition" type = "text" value="-" *ngIf="filterViewState  == config.itemState.initialize" readonly>
+        </div>
+      </div>
+      <div class="mt_1">
+        <div class="col_7" >
+          <div class="text_italic">{{'exporter' | translate}}</div>
+          <input class="CN_input col_10" id="filterExporterName" type="text" value="{{filterExporterName}}" *ngIf="filterViewState != config.itemState.initialize">
+          <input class="CN_input_read_only col_10" id="filterExporterName"  type="text" value="-" *ngIf="filterViewState == config.itemState.initialize" readonly>
+        </div>
+      </div>
+      <div class="mt_1" *ngIf="filterViewState == config.itemState.exported || filterViewState == 'all'">
+        <div class="col_4">
+          <div class="text_italic">{{'CARRIER'  | translate}}</div>
+          <input class="CN_input col_10" id = "filterCarrier" name = "filterCarrie" type = "text" value="{{filterCarrier}}">
+        </div>
+        <div class="col_6 ps_1">
+          <div class="text_italic">{{'TRACK_NUMBER'  | translate}}</div>
+          <input class="CN_input col_10" id = "filterTrackNumber" name = "filterTrackNumber" type = "text" value="{{filterTrackNumber}}">
+        </div>
+      </div>
+      <div class="mt_1" *ngIf="filterViewState  != config.itemState.exported && filterViewState != 'all'">
+        <div class="col_4">
+          <div class="text_italic">{{'CARRIER'  | translate}}</div>
+          <input class="CN_input_read_only col_10" id = "filterCarrier" type = "text" value="-" readonly>
+        </div>
+        <div class="col_6 ps_1">
+          <div class="text_italic">{{'TRACK_NUMBER'  | translate}}</div>
+          <input class="CN_input_read_only col_10" id = "filterTrackNumber" type = "text" value="-" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="mt_1 me_1 mb_1">
+      <div class="col_7 ps_2 mt_sm_1 r1">
+        <input class="div_inline" type="checkbox" id="type" (change)="filterSearchTable()">
+        <p class="div_inline ms_1 text_italic">{{"Search_Archived_Item" | translate}}</p>
+      </div>
+      <div class="col_3 div_end mt_sm_1">
+        <button class="CN_button_success div_inline l6" (click)="setFilter()">{{'FILTER_ITEM' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="createItemView">
+  <div class="CN_pop_card text_font r43">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeCreateItemView()"></i>
+    </div>
+    <div class="ps_2 pe_2">
+      <div class="mt_0">
+        <div class="text_italic">{{'ITEM_NAME' | translate}}</div>
+        <input class="CN_input col_9" id="newItemName" [(ngModel)] = "item.itemName">
+      </div>
+      <div class="mt_1">
+        <div class="col_6 pe_1">
+          <div class="text_italic">{{'ORDER_NO'  | translate}}</div>
+          <input class="CN_input col_10" id="newOrderNumber" [(ngModel)] = "item.orderNumber">
+        </div>
+        <div class="col_4">
+          <div class="text_italic">{{'STATUS'  | translate}}</div>
+          <select class="CN_input col_10"  [(ngModel)] = "item.state" (change)="changeStatus()">
+            <option *ngFor="let state of config.itemState | keyvalue" value="{{state.value}}">
+              {{state.value | translate}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="mt_1" *ngIf="item.state != config.itemState.initialize">
+        <div class="col_7">
+          <div class="text_italic">{{'IMPORTER'  | translate}}</div>
+          <input class="CN_input col_10" type="text" id = "newImporter" [(ngModel)] = "item.importerName">
+        </div>
+        <div class="col_6 pe_1" >
+          <div class="text_italic">{{'SERIAL_NO'  | translate}}</div>
+          <input class="CN_input col_10" type="text" id="newSerialNumber" [(ngModel)] = "item.serialNumber" >
+        </div>
+        <div class="col_3">
+          <div class="text_italic">{{'ITEM_PRICE'  | translate}}</div>
+          <input class="CN_input col_10" type="number" [(ngModel)] = "item.price">
+        </div>
+      </div>
+      <div class="mt_1" *ngIf="item.state == config.itemState.initialize" >
+        <div class="col_7">
+          <div class="text_italic">{{'IMPORTER'  | translate}}</div>
+          <input class="CN_input_read_only col_10" id = "newImporter" [(ngModel)] = "item.importerName" readonly>
+        </div>
+        <div class="col_6 pe_1" >
+          <div class="text_italic">{{'SERIAL_NO'  | translate}}</div>
+          <input class="CN_input_read_only col_10" id="newSerialNumber" [(ngModel)] = "item.serialNumber" readonly>
+        </div>
+        <div class="col_3">
+          <div class="text_italic">{{'ITEM_PRICE'  | translate}}</div>
+          <input class="CN_input col_10" type="number" [(ngModel)] = "item.price">
+        </div>
+      </div>
+      <div class="mt_1">
+        <div class="col_6 pe_1">
+          <div class="text_italic">{{'ITEM_REPO'  | translate}}</div>
+          <select class="CN_input col_10" id="newStoreHouse" [(ngModel)] = "item.storeHouse">
+            <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+              {{storeHouse.name}}<span *ngIf="storeHouse.status == config.storeHouseState.suspend">{{'(suspend)' | translate}}</span>
+            </option>
+          </select>
+        </div>
+        <div class="col_4">
+          <div class="text_italic">{{'POSITION'  | translate}}</div>
+          <input class="CN_input col_10" type="text" [(ngModel)] = "item.position"  *ngIf="item.state != config.itemState.initialize">
+          <input class="CN_input_read_only col_10" type="text" [(ngModel)] = "item.position" *ngIf="item.state == config.itemState.initialize" readonly>
+        </div>
+      </div>
+      <div class="mt_1" *ngIf="item.state == config.itemState.exported">
+        <div class="col_7">
+          <div class="text_italic">{{'EXPORTER'  | translate}}</div>
+          <input class="CN_input col_10" type="text" id = "newExporter" [(ngModel)] = "item.exporterName">
+        </div>
+        <div class="col_4">
+          <div class="text_italic">{{'CARRIER'  | translate}}</div>
+          <input class="CN_input col_10" type="text" [(ngModel)] = "item.carrier">
+        </div>
+        <div class="col_6 ps_1">
+          <div class="text_italic">{{'TRACK_NUMBER'  | translate}}</div>
+          <input class="CN_input col_10" type="text" [(ngModel)] = "item.trackNumber">
+        </div>
+      </div>
+      <div class="mt_1" *ngIf="item.state != config.itemState.exported">
+        <div class="col_7">
+          <div class="text_italic">{{'EXPORTER'  | translate}}</div>
+          <input class="CN_input_read_only col_10" type="text" id="newExporter" [(ngModel)] = "item.exporterName" readonly>
+        </div>
+        <div class="col_4">
+          <div class="text_italic">{{'CARRIER'  | translate}}</div>
+          <input class="CN_input_read_only col_10" type="text" [(ngModel)] = "item.carrier" readonly>
+        </div>
+        <div class="col_6 ps_1">
+          <div class="text_italic">{{'TRACK_NUMBER'  | translate}}</div>
+          <input class="CN_input_read_only col_10" type="text" [(ngModel)] = "item.trackNumber" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="mt_2 me_1 mb_1 div_end">
+      <button class="CN_button_success div_inline l6" (click)="saveItemInProcess()">{{'CREATE_ITEM' | translate}}</button>
+      <button class="CN_button_success div_inline l6" (click)="saveItemInHistory()" *ngIf="item.state == config.itemState.exported">{{'CREATE_ARCHIVE_ITEM' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="confirmArchiveView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <p>{{item.itemName}}</p>
+      <div class="mt_sm_1">{{'ARCHIVE_ITEM_CONFIRM'| translate}}</div>
+    </div>
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div class="col_4 div_start">
+        <button class="CN_button_success l5" (click)="closeArchiveItemView()">{{'ARCHIVE_NO' | translate}}</button>
+      </div>
+      <div class="col_4 div_end">
+        <button class="CN_button_danger l5" (click)="archiveItem()">{{'ARCHIVE_YES' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="confirmUnarchiveView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <p>{{item.itemName}}</p>
+      <div class="mt_sm_1">{{'UNARCHIVE_ITEM_CONFIRM'| translate}}</div>
+    </div>
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div class="col_4 div_start">
+        <button class="CN_button_success l5" (click)="closeUnarchiveItemView()">{{'UNARCHIVE_NO' | translate}}</button>
+      </div>
+      <div class="col_4 div_end">
+        <button class="CN_button_danger l5" (click)="unarchiveItem()">{{'UNARCHIVE_YES' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="confirmDeleteView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <p>{{item.itemName}}</p>
+      <div class="mt_sm_1">{{'DELETE_ITEM_CONFIRM'| translate}}</div>
+    </div>
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div class="col_4 div_start">
+        <button class="CN_button_success l5" (click)="closeDeleteItemView()">{{'DELETE_NO' | translate}}</button>
+      </div>
+      <div class="col_4 div_end">
+        <button class="CN_button_danger l5" (click)="deleteItem()">{{'DELETE_YES' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end r0">
+      <i class="bi bi-x-square text_success" style="display:none" id="popCloseButton" (click)="closePop()" ></i>
+    </div>
+    <div class="mb_1 ms_2 me_2">
+      <label>{{ message | translate}}</label>
+    </div>
+    <div class="mb_1 ms_1 me_1 r0">
+      <div class="progress" style="display: none" id="popProcessBar">
+        <div class="progress-bar" style="width:100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>

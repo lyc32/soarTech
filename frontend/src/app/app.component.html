@@ -1,0 +1,19 @@
+<!-- Background-->
+<ng-particles
+        id="tsparticles"
+        [options]="particlesOptions"
+        [particlesInit]="particlesInit"
+        (particlesLoaded)="particlesLoaded($event)"
+>
+</ng-particles>
+
+<!-- after login-->
+<div *ngIf="isLogin==true">
+  <router-outlet></router-outlet>
+</div>
+
+<!-- before login-->
+<div *ngIf="isLogin==false">
+  <logInView></logInView>
+</div>
+

@@ -1,0 +1,57 @@
+<div class="CN_Container text_font">
+  <div class="col_3 pe_1 div_end">
+    <div class="CN_card_unLock div_center l18" style="margin-left:auto;">
+      <div class="mt_2" (click)="goMyAccountInfoView()">
+        <i class="bi bi-person-circle text_title"></i>
+        <div class="text_middle">{{currentAccountName}}</div>
+      </div>
+      <button class="CN_button_success_full l16 r3 mt_1 ms_1 me_1" (click)="goAccountManagementView()">
+        <div><i class="bi bi-people-fill text_middle"></i></div>
+        {{'ACCOUNT_MANAGEMENT' | translate}}
+      </button>
+      <button class="CN_button_success_full l16 r3 mt_1 ms_1 me_1" (click)="goOrderManagementView()">
+        <div><i class="bi bi-card-list text_middle"></i></div>
+        {{'ORDER_MANAGEMENT' | translate}}
+      </button>
+      <button class="CN_button_success_full l16 r3 mt_1 ms_1 me_1" (click)="goItemManagementView()">
+        <div><i class="bi bi-box-seam-fill text_middle"></i></div>
+        {{'ITEM_MANAGEMENT' | translate}}
+      </button>
+      <button class="CN_button_success_full l16 r3 mt_1 ms_1 me_1" (click)="goRepoManagementView()">
+        <div><i class="bi bi-house-gear-fill text_middle"></i></div>
+        {{'REPO_MANAGEMENT' | translate}}
+      </button>
+      <button class="CN_button_success_full l16 r3 mt_1 ms_1 me_1" (click)="goPhpMyAdmin()">
+        <div><i class="bi bi-database-gear text_middle"></i></div>
+        <div>PhpMyAdmin</div>
+      </button>
+      <button class="CN_button_success_full l16 r3 mt_1 ms_1 me_1" (click)="checkServer()">
+        <div><i class="bi bi-tools text_middle"></i></div>
+        {{'SYSTEM_MONITOR' | translate}}
+      </button>
+      <button class="CN_button_success_full l16 r2 mt_2 ms_1 me_1 mb_2" (click)="logOut()">
+        {{'LOG_OUT' | translate}}
+        <i class="bi bi-arrow-right-square-fill ms-1"></i>
+      </button>
+    </div>
+  </div>
+  <div class="col_7 ps_1 div_start" *ngIf="workspace=='home'">
+    <rootMyAccountInfoView></rootMyAccountInfoView>
+  </div>
+  <div class="col_7 ps_1 div_start" *ngIf="workspace=='account'">
+    <rootAccountView></rootAccountView>
+  </div>
+  <div class="col_7 ps_1 div_start" *ngIf="workspace=='order'">
+    <rootOrderView></rootOrderView>
+  </div>
+  <div class="col_7 ps_1 div_start" *ngIf="workspace=='item'">
+    <rootItemView></rootItemView>
+  </div>
+  <div class="col_7 ps_1 div_start" *ngIf="workspace=='storehouse'">
+    <rootStoreHouseView></rootStoreHouseView>
+  </div>
+  <div class="col_7 ps_1 div_start" *ngIf="workspace=='system'">
+    <rootSystemView></rootSystemView>
+  </div>
+</div>
+

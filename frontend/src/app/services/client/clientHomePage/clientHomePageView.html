@@ -1,0 +1,56 @@
+<div class="CN_card">
+  <div class="ps_1 pt_3 pe_1 div_center title">
+    <i class="bi bi-person-circle"></i>
+  </div>
+  <div class="ps_1 pe_1 pd_2 div_center text_font text_title">
+    {{currentAccountName}}
+  </div>
+  <div class="ps_1 pe_1 pd_1 div_center mt_2">
+    <button class="CN_button_success_full col_8 div_center mt_0 r1" (click)="goAddNewOrderView()">
+      <div class="col_3 div_end">
+        <i class="bi bi-clipboard-plus me_1"></i>
+      </div>
+      <div class="col_6 div_start">
+        {{'CREATE_NEW_ORDER' | translate}}
+      </div>
+    </button>
+    <button class="CN_button_success_full col_8 div_center mt_2 r1" (click)="goAddOrdersView()">
+      <div class="col_3 div_end">
+        <i class="bi bi-clipboard-plus me_1"></i>
+      </div>
+      <div class="col_6 div_start">
+        {{'CREATE_ORDERS' | translate}}
+      </div>
+    </button>
+    <button class="CN_button_success_full col_8 div_center mt_2 r1" (click)="goOrderInProcessView()">
+      <div class="col_3 div_end">
+        <i class="bi bi-card-list me_1"></i>
+      </div>
+      <div class="col_6 div_start">
+        {{'MY_ORDER_MANAGEMENT' | translate}}
+      </div>
+    </button>
+    <button class="CN_button_success_full col_8 div_center mt_2 r1" (click)="goOrderInHistoryView()">
+      <div class="col_3 div_end">
+        <i class="bi bi-card-list me_1"></i>
+      </div>
+      <div class="col_6 div_start">
+        {{'MY_ORDER_IN_HISTORY' | translate}}
+      </div>
+    </button>
+    <button class="CN_button_success_full col_8 div_center mt_2 r1" (click)="goMyAccountInfoView()">
+      <div class="col_3 div_end">
+        <i class="bi bi-person-fill-gear me_1"></i>
+      </div>
+      <div class="col_6 div_start">
+        {{'MY_ACCOUNT_SETTING' | translate}}
+      </div>
+    </button>
+    <button class="CN_button_success_full col_8 div_center mt_2 r1" (click)="logOut()">
+      <div class="col_7 div_center">
+        {{'LOG_OUT' | translate}}<i class="bi bi-arrow-right-square-fill ms_1"></i>
+      </div>
+    </button>
+  </div>
+</div>
+

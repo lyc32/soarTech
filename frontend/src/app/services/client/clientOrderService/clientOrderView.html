@@ -1,0 +1,234 @@
+<div class="CN_card text_font">
+  <div class="ps_1 pt_1 pe_1 pd_1">
+    <div class="col_2 div_start">
+      <button class="CN_button_success l3" (click)="goBack()"><i class="bi bi-arrow-left"></i></button>
+    </div>
+    <div class="col_8 div_end" *ngIf="storeHouseList.length > 0">
+      <button class="CN_button_warning div_inline l7" (click)="showFilterView()"><i class="bi bi-search me_1"       ></i>{{'FILTER_ORDER' | translate}}</button>
+    </div>
+    <div class="col_8 div_end" *ngIf="storeHouseList.length == 0">
+      <button class="CN_button_disable div_inline l7"><i class="bi bi-search me_1"></i>{{'FILTER_ORDER' | translate}}</button>
+    </div>
+  </div>
+  <div class="ps_1 pe_1 pt_1 mb_1 border_bottom border_color_gray">
+    <div class="ps_1 pe_1">
+      <div class="col_4 div_center text_italic border_end border_color_gray">{{'ORDER_NO'    | translate}}</div>
+      <div class="col_3 div_center text_italic border_end border_color_gray">{{'CREATE_TIME' | translate}}</div>
+      <div class="col_3 div_center text_italic">{{'STATUS' | translate}}</div>
+    </div>
+  </div>
+
+  <div class="r27 border_bottom border_color_gray text_table">
+    <div class="ps_1 pe_1" *ngFor="let order of orderList;  index as i">
+      <div class="CN_card_button r2 ps_1 pe_1 mb_1" (click)="showOrderDetailView(i)">
+        <div class="col_4 div_center mt_1 ps_1">
+          {{order.orderNumber}}
+        </div>
+        <div class="col_3 div_center mt_1 ps_1">
+          {{order.createTime}}
+        </div>
+        <div class="col_3 div_center mt_1 ps_1">
+          <span class="text_success" *ngIf="order.state==config.orderState.processing">{{order.state | translate}}</span>
+          <span class="text_danger " *ngIf="order.state==config.orderState.error"     >{{order.state | translate}}</span>
+          <span class="text_warning" *ngIf="order.state==config.orderState.initialize">{{order.state | translate}}</span>
+          <span class="text_second " *ngIf="order.state==config.orderState.finished"  >{{order.state | translate}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pt_1 pb_1 ps_1 pe_1">
+    <div class="col_10 div_end" *ngIf="storeHouseList.length > 0 ">
+      <button class="CN_button_success l3" (click)="prePage()"><i class="bi bi-arrow-left"></i></button>
+      <label class="div_center l3">{{page}}</label>
+      <button class="CN_button_success l3" (click)="nextPage()"><i class="bi bi-arrow-right"></i></button>
+    </div>
+    <div class="col_10 div_end" *ngIf="storeHouseList.length == 0">
+      <button class="CN_button_disable l3" ><i class="bi bi-arrow-left"></i></button>
+      <label class="div_center l3">{{page}}</label>
+      <button class="CN_button_disable l3" ><i class="bi bi-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="filterView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeFilterView()"></i>
+    </div>
+    <div class="ps_2 pe_2">
+      <div class="col_5">
+        <div class="text_italic">{{'START_TIME' | translate}}</div>
+        <input class="CN_input col_9" id="startTime" type = "date" value="{{startTime}}">
+      </div>
+      <div class="col_5">
+        <div class="text_italic">{{'END_TIME' | translate}}</div>
+        <input class="CN_input col_9" id="endTime" type = "date" value="{{endTime}}">
+      </div>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'STOREHOUSE' | translate}}</div>
+      <select class="CN_input col_10" id="storeHouseId" value="{{storeHouse}}">
+        <option value="all">{{'all' | translate}}</option>
+        <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+          {{storeHouse.name}}<span *ngIf="storeHouse.status == config.storeHouseState.suspend">{{'(suspend)' | translate}}</span>
+        </option>
+      </select>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="text_italic">{{'STATUS' | translate}}</div>
+      <select class="CN_input col_4" id="state" value="{{state}}" *ngIf="table=='inProcess'">
+        <option value="all">{{'all' | translate}}</option>
+        <option *ngFor="let item of config.orderState | keyvalue" value="{{item.value}}">
+          {{item.value | translate}}
+        </option>
+      </select>
+      <select class="CN_input col_4" id="state" value="{{state}}" *ngIf="table=='inHistory'">
+        <option value="all">{{'all' | translate}}</option>
+      </select>
+    </div>
+    <div class="mt_1 me_1 mb_1 div_end">
+      <button class="CN_button_success div_inline l6" (click)="setFilter()">{{'FILTER_ORDER' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="orderDetailView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 ms_1 me_1 border_bottom border_color_gray">
+      <div class="col_9 div_center">
+        {{order.orderNumber}}
+      </div>
+      <div class="col_1 div_end">
+        <i class="bi bi-x-square text_success" (click)="closeOrderDetailView()"></i>
+      </div>
+    </div>
+    <div class="ps_1 pe_1 mt_1">
+      <div class="col_3 div_end pe_1 mt_1 text_italic">{{'ORDER_EMAIL'  | translate}}</div>
+      <input class="col_7 CN_input_read_only" type="text" id="OrderEmail" value="{{order.orderEmail}}" readonly>
+    </div>
+    <div class="ps_1 pe_1 mt_sm_1">
+      <div class="col_3 div_end pe_1 mt_1 text_italic">{{'ORDER_LINK'  | translate}}</div>
+      <textarea class="CN_input_read_only col_7 r4" id="OrderLink" value="{{order.orderLink}}" readonly></textarea>
+    </div>
+    <div class="ps_1 pe_1 mt_sm_1">
+      <div class="col_3 div_end pe_1 mt_1 text_italic">{{'STOREHOUSE'  | translate}}</div>
+      <select class="CN_input col_7"  id="StoreHouse" value="{{order.storeHouse}}">
+        <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+          {{storeHouse.name}}<span *ngIf="storeHouse.status == config.storeHouseState.suspend">{{'(suspend)' | translate}}</span>
+        </option>
+      </select>
+    </div>
+    <div class="ps_1 pe_1 mt_sm_1">
+      <div class="col_3 div_end pe_1 mt_1 text_italic">{{'ORDER_PRICE'  | translate}}</div>
+      <input class="col_7 CN_input" type="number" id="totalPrice" value="{{order.totalPrice}}">
+    </div>
+    <div class="ps_1 pe_1 mt_sm_1 pb_1 border_bottom border_color_gray">
+      <div class="col_3 div_end pe_1 mt_1 text_italic">{{'DETAILS'  | translate}}</div>
+      <textarea class="CN_input col_7 r4" id="message" value="{{order.message}}"></textarea>
+    </div>
+    <div class="r9">
+      <div class="ps_1 pe_1 mt_sm_1">
+        <div class="col_9">
+          {{'ITEM_INFO' | translate}}<i class="bi bi-arrow-clockwise" *ngIf="order.state != config.orderState.finished" (click)="reloadItem()"></i>
+        </div>
+        <div class="col_1 div_end" *ngIf="order.state != config.orderState.finished">
+          <i class="bi bi-plus-square text_success" (click)="showAddItemView()"></i>
+        </div>
+        <div class="col_1 div_end" *ngIf="order.state == config.orderState.finished">
+          <i class="bi bi-plus-square text_second"></i>
+        </div>
+      </div>
+      <div class="mt_sm_1 div_center" *ngIf=" itemList.length == 0 && order.state != config.orderState.finished">
+        <button class="CN_button_success mt_2 l7" (click)="autoFix()">{{'AutoFix' | translate}}</button>
+      </div>
+      <div class="mt_sm_1 div_center r7 overflow_y" *ngIf="itemList.length > 0 && order.state != config.orderState.finished">
+        <div class="ps_1 pe_1" *ngFor="let item of itemList; index as i">
+          <div class="CN_card_button r2 ps_1 pe_1 mb_1">
+            <div class="col_9 div_start ps_1 r2 overflow_x">
+              <div>{{item.itemName}}</div>
+              <div>{{"$" + item.price}}</div>
+            </div>
+            <div class="col_1 text_danger div_center r1 border_start mt_1 ps_1">
+              <i class="bi bi-dash-square" (click)="removeItem(i)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt_sm_1 div_center r7 overflow_y" *ngIf="order.state == config.orderState.finished">
+        <div class="ps_1 pe_1" *ngFor="let item of itemList; index as i">
+          <div class="CN_card_button r2 ps_1 pe_1 mb_1">
+            <div class="col_9 div_start ps_1 r2 overflow_x">
+              <div>{{item.itemName}}</div>
+              <div>{{"$" + item.price}}</div>
+            </div>
+            <div class="col_1 text_second div_center r1 border_start  mt_1 ps_1">
+              <i class="bi bi-dash-square"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pt_1 ps_1 pe_1 mb_1 div_end border_top border_color_gray" *ngIf="order.state != config.orderState.finished">
+      <button class="CN_button_success div_inline l6" (click)="updateOrder()">{{'UPDATE_ORDER' | translate}}</button>
+      <button class="CN_button_danger  div_inline l6" (click)="showConfirmDeleteView()">{{'DELETE_ORDER' | translate}}</button>
+    </div>
+    <div class="pt_1 me_1 mb_1 div_end border_top border_color_gray" *ngIf="order.state == config.orderState.finished">
+      <button class="CN_button_disable div_inline l6" >{{'UPDATE_ORDER' | translate}}</button>
+      <button class="CN_button_disable div_inline l6" >{{'DELETE_ORDER' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="addItemView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeAddItemView()"></i>
+    </div>
+    <div class="ps_2 pe_2">
+      <div class="mt_0">
+        <div class="text_italic">{{'ITEM_NAME' | translate}}</div>
+        <input class="CN_input col_9" id="newItemName">
+      </div>
+      <div class="mt_1">
+        <div class="text_italic">{{'ITEM_PRICE' | translate}}</div>
+        <input class="CN_input col_9" type ="number" id="newPrice">
+      </div>
+    </div>
+    <div class="mt_2 me_1 mb_1 div_end">
+      <button class="CN_button_success div_inline l6" (click)="addItem()">{{'CREATE_ITEM' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="confirmDeleteView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div>{{'DELETE_ORDER_CONFIRM'| translate}}</div>
+    </div>
+    <div class="mt_2 mb_1 ms_1 me_1 div_center">
+      <div class="col_4 div_start">
+        <button class="CN_button_success l5" (click)="closeConfirmDeleteView()">{{'DELETE_NO' | translate}}</button>
+      </div>
+      <div class="col_4 div_end">
+        <button class="CN_button_danger l5" (click)="deleteOrder()">{{'DELETE_YES' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end r0">
+      <i class="bi bi-x-square text_success" style="display:none" id="popCloseButton" (click)="closePop()" ></i>
+    </div>
+    <div class="mb_1 ms_2 me_2">
+      <label>{{ message | translate}}</label>
+    </div>
+    <div class="mb_1 ms_1 me_1 r0">
+      <div class="progress" style="display: none" id="popProcessBar">
+        <div class="progress-bar" style="width:100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+

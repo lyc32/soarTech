@@ -1,0 +1,72 @@
+<div class="CN_card text_font">
+  <div class="ps_1 pt_1 pe_1 pd_1">
+    <div class="col_2 div_start">
+      <button class="CN_button_success l3" (click)="goBack()"><i class="bi bi-arrow-left"></i></button>
+    </div>
+  </div>
+  <div class="ps_2 pe_2 mb_2 border_bottom border_color_gray">
+    <div class="col_7 text_table text_italic ms_1 mt_1">{{'Input_Serial_To_Search' | translate}}</div>
+    <input class="CN_input col_7 me_1 mb_1" type="text" autofocus [(ngModel)] = "serialNumber">
+    <button class="CN_button_success col_2 mt_1 mb_1" *ngIf="storeHouseList.length > 0 " (click)="searchItem()">{{'FILTER_ITEM' | translate}}</button>
+    <button class="CN_button_disable col_2 mt_1 mb_1" *ngIf="storeHouseList.length == 0">{{'FILTER_ITEM' | translate}}</button>
+  </div>
+  <div class="r23_5 border_bottom border_color_gray div_center">
+    <div class="CN_sm_card col_9" *ngIf="item.serialNumber != null &&  item.serialNumber != undefined && item.serialNumber != ''">
+      <div class="mt_1 div_center ps_1 pe_1">
+        <p class="col_10 div_start border_bottom border_color_gray">{{item.itemName}}</p>
+      </div>
+      <div class="mt_0">
+        <div class="col_3 div_end pe_1 mt_1 text_italic">{{'SERIAL_NO'  | translate}}</div>
+        <div class="col_6 CN_input_read_only pt_1 pe_1">{{item.serialNumber}}</div>
+      </div>
+      <div class="mt_1">
+        <div class="col_3 div_end pe_1 mt_1 text_italic">{{'ITEM_REPO'  | translate}}</div>
+        <select class="col_6 CN_input pt_1 pe_1" [(ngModel)] = "item.storeHouse">
+          <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+            {{storeHouse.name}}<span *ngIf="storeHouse.status == config.storeHouseState.suspend">{{'(suspend)' | translate}}</span>
+          </option>
+        </select>
+      </div>
+      <div class="mt_1">
+        <div class="col_3 div_end pe_1 mt_1 text_italic">{{'POSITION'  | translate}}</div>
+        <input class="col_6 CN_input" type="text" [(ngModel)] = "item.position">
+      </div>
+      <div class="mt_1">
+        <div class="col_3 div_end pe_1 mt_1 text_italic">{{'ITEM_PRICE'  | translate}}</div>
+        <input class="col_6 CN_input" type="number" [(ngModel)] = "item.price">
+      </div>
+      <div class="mt_1">
+        <div class="col_3 div_end pe_1 mt_1 text_italic">{{'CARRIER'  | translate}}</div>
+        <input class="col_6 CN_input" type="text" [(ngModel)] = "item.carrier">
+      </div>
+      <div class="mt_1 mb_2">
+        <div class="col_3 div_end pe_1 mt_1 text_italic">{{'TRACK_NUMBER'  | translate}}</div>
+        <input class="col_6 CN_input" type="text" [(ngModel)] = "item.trackNumber">
+      </div>
+    </div>
+  </div>
+  <div class="pt_1 pb_1 ps_1 pe_1">
+    <div class="col_10 div_end" *ngIf="item.serialNumber != null && item.serialNumber != undefined && item.serialNumber != ''">
+      <button class="CN_button_success l5" (click)="exportItem()">{{'EXPORT' | translate}}</button>
+    </div>
+    <div class="col_10 div_end" *ngIf="item.serialNumber == null || item.serialNumber == undefined || item.serialNumber == ''">
+      <button class="CN_button_disable l5">{{'EXPORT' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end r0">
+      <i class="bi bi-x-square text_success" style="display:none" id="popCloseButton" (click)="closePop()" ></i>
+    </div>
+    <div class="mb_1 ms_2 me_2">
+      <label>{{ message | translate}}</label>
+    </div>
+    <div class="mb_1 ms_1 me_1 r0">
+      <div class="progress" style="display: none" id="popProcessBar">
+        <div class="progress-bar" style="width:100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>

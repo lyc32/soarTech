@@ -1,0 +1,97 @@
+<div class="CN_card text_font">
+  <div class="ps_1 pt_1 pe_1 pd_1">
+    <div class="col_2 div_start">
+      <button class="CN_button_success l3" (click)="goBack()"><i class="bi bi-arrow-left"></i></button>
+    </div>
+    <div class="col_8 div_end">
+      <button class="CN_button_warning div_inline l8" *ngIf="storeHouseList.length > 0 " (click)="showReportView()"><i class="bi bi-card-checklist me_1"></i>{{'GET_REPORT' | translate}}</button>
+      <button class="CN_button_disable div_inline l8" *ngIf="storeHouseList.length == 0"><i class="bi bi-card-checklist me_1"></i>{{'GET_REPORT' | translate}}</button>
+    </div>
+  </div>
+  <div class="ps_1 pe_1 pt_1 mb_1 border_bottom border_color_gray">
+    <div class="ps_1 pe_1">
+      <div class="col_8 div_center text_italic border_end border_color_gray">{{'ITEM_INFO' | translate}}</div>
+      <div class="col_2 div_center text_italic">{{'STATUS' | translate}}</div>
+    </div>
+  </div>
+  <div class="r27 border_bottom border_color_gray text_table">
+    <div class="ps_1 pe_1" *ngFor="let item of itemList">
+      <div class="CN_card_button r2 ps_1 pe_1 mb_1">
+        <div class="col_8 div_start mt_1 ps_1 r1 overflow_x">
+          <div>{{item.itemName}}</div>
+          <div>{{item.serialNumber}}</div>
+        </div>
+        <div class="col_2 div_center border_start mt_1">
+          <div class="text_font text_warning text_table pt_1"   *ngIf="item.state == config.itemState.initialize">{{item.state | translate}}</div>
+          <div class="text_font text_success text_table pt_1"   *ngIf="item.state == config.itemState.imported">  {{item.state | translate}}</div>
+          <div class="text_font text_second  text_table pt_1" *ngIf="item.state == config.itemState.exported">  {{item.state | translate}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pt_1 pb_1 ps_1 pe_1">
+    <div class="col_10 div_end" *ngIf="storeHouseList.length > 0 ">
+      <button class="CN_button_success l3" (click)="prePage()"><i class="bi bi-arrow-left"></i></button>
+      <label class="div_center l3">{{page}}</label>
+      <button class="CN_button_success l3" (click)="nextPage()"><i class="bi bi-arrow-right"></i></button>
+    </div>
+    <div class="col_10 div_end" *ngIf="storeHouseList.length == 0">
+      <button class="CN_button_disable l3" ><i class="bi bi-arrow-left"></i></button>
+      <label class="div_center l3">{{page}}</label>
+      <button class="CN_button_disable l3" ><i class="bi bi-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="reportView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end">
+      <i class="bi bi-x-square text_success" (click)="closeReportView()"></i>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="col_5">
+        <div class="text_italic">{{'CLIENT_NAME' | translate}}</div>
+        <input class="CN_input col_9" id="clientName" [(ngModel)]="clientName">
+      </div>
+      <div class="col_5">
+        <div class="text_italic">{{'STOREHOUSE' | translate}}</div>
+        <select class="CN_input col_9" [(ngModel)]="storeHouse">
+          <option value="all">{{'all' | translate}}</option>
+          <option *ngFor="let storeHouse of storeHouseList" value="{{storeHouse.name}}">
+            {{storeHouse.name}}<span *ngIf="storeHouse.status == config.storeHouseState.suspend">{{'(suspend)' | translate}}</span>
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="ps_2 pe_2 mt_1">
+      <div class="col_5">
+        <div class="text_italic">{{'START_TIME' | translate}}</div>
+        <input class="CN_input col_9" type="date" [(ngModel)]="startTime">
+      </div>
+      <div class="col_5">
+        <div class="text_italic">{{'END_TIME' | translate}}</div>
+        <input class="CN_input col_9" type="date" [(ngModel)]="endTime">
+      </div>
+    </div>
+    <div class="pe_1 mt_2 mb_1 div_end">
+      <button class="CN_button_success l7" (click)="getReport()">{{'GET_REPORT' | translate}}</button>
+      <button class="CN_button_success l7" (click)="getExcel()">{{'SAVE_EXCEL' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+  <div class="CN_pop_card text_font">
+    <div class="mt_1 me_1 div_end r0">
+      <i class="bi bi-x-square text_success" style="display:none" id="popCloseButton" (click)="closePop()" ></i>
+    </div>
+    <div class="mb_1 ms_2 me_2">
+      <label>{{ message | translate}}</label>
+    </div>
+    <div class="mb_1 ms_1 me_1 r0">
+      <div class="progress" style="display: none" id="popProcessBar">
+        <div class="progress-bar" style="width:100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
