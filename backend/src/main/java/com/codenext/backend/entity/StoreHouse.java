@@ -142,16 +142,16 @@ public class StoreHouse extends CodeNextEntity
     @Override
     public void format()
     {
-        this.name         = this.name         == null ? null : this.name         ;
-        this.createTime   = this.createTime   == null ? null : this.createTime   ;
-        this.status       = this.status       == null ? null : this.status       ;
-        this.details      = this.details      == null ? null : this.details      ;
-        this.addressLine1 = this.addressLine1 == null ? null : this.addressLine1 ;
-        this.addressLine2 = this.addressLine2 == null ? null : this.addressLine2 ;
-        this.city         = this.city         == null ? null : this.city         ;
-        this.state        = this.state        == null ? null : this.state        ;
-        this.country      = this.country      == null ? null : this.country      ;
-        this.zipCode      = this.zipCode      == null ? null : this.zipCode      ;
+        this.name         = this.name         == null ? null : this.name         .trim();
+        this.createTime   = this.createTime   == null ? null : this.createTime   .trim();
+        this.status       = this.status       == null ? null : this.status       .trim();
+        this.details      = this.details      == null ? null : this.details      .trim();
+        this.addressLine1 = this.addressLine1 == null ? null : this.addressLine1 .trim();
+        this.addressLine2 = this.addressLine2 == null ? null : this.addressLine2 .trim();
+        this.city         = this.city         == null ? null : this.city         .trim();
+        this.state        = this.state        == null ? null : this.state        .trim();
+        this.country      = this.country      == null ? null : this.country      .trim();
+        this.zipCode      = this.zipCode      == null ? null : this.zipCode      .trim();
     }
 
     @Override

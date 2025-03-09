@@ -3,16 +3,20 @@ package com.codenext.backend.service.fotAllRoles.emailService;
 import com.codenext.backend.config.I18nUtil;
 import com.codenext.backend.config.context.AccountTypeAndState;
 import com.codenext.backend.entity.Account;
+import com.codenext.backend.entity.SmtpMail;
 import com.codenext.backend.repository.AccountRepository;
+import com.codenext.backend.repository.SmtpMailRepository;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
 // EmailService
 //
@@ -39,10 +43,12 @@ public class EmailService
 
     // use to send email
     @Autowired
-    private JavaMailSender javaMailSender;
+    private SmtpMailRepository smtpMailRepository;
 
-    @Value("${spring.mail.username}")
-    private String from;
+    //private JavaMailSender javaMailSender;
+
+    //@Value("${spring.mail.username}")
+    //private String from;
 
     // Forget Password()
     public String forgetPassword(String email, String lang)
@@ -68,6 +74,13 @@ public class EmailService
             return I18nUtil.getMessage("ERROR_ACCOUNT_IS_SUSPENDED", lang);
         }
 
+        List<SmtpMail> smtpMailList = this.smtpMailRepository.findAll();
+
+        if(smtpMailList == null || smtpMailList.size() == 0)
+        {
+            return I18nUtil.getMessage("ERROR_SEND_EMAIL_FAILED", lang);
+        }
+
         // set email as password.
         String timeStamp = String.valueOf(System.currentTimeMillis());
         // and then encrypted the password using the same MD5 algorithm as the front-end.
@@ -76,10 +89,10 @@ public class EmailService
 
         String htmlEmail = I18nUtil.getMessage("EMAIL_PASS_BODY", lang);
         htmlEmail = htmlEmail.replace("{password}", timeStamp);
-        htmlEmail = htmlEmail.replace("{email}", from);
+        htmlEmail = htmlEmail.replace("{email}", smtpMailList.get(0).getUsername());
 
         // check send email successful or not
-        if(!sendMail(email, I18nUtil.getMessage("EMAIL_PASS_TITLE", lang), htmlEmail))
+        if(!sendMail(smtpMailList.get(0), email , I18nUtil.getMessage("EMAIL_PASS_TITLE", lang), htmlEmail))
         {
             return I18nUtil.getMessage("ERROR_SEND_EMAIL_FAILED", lang);
         }
@@ -91,8 +104,21 @@ public class EmailService
     }
 
     // Send Mail()
-    private boolean sendMail(String toEmail, String title, String content)
+    private boolean sendMail(SmtpMail smtpMail,String toEmail, String title, String content)
     {
+        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+        javaMailSender.setHost(smtpMail.getHost());
+        javaMailSender.setPort(smtpMail.getPort());
+        javaMailSender.setUsername(smtpMail.getUsername());
+        javaMailSender.setPassword(smtpMail.getPassword());
+        javaMailSender.setProtocol(smtpMail.getProtocol());
+        javaMailSender.setDefaultEncoding("UTF-8");
+
+        Properties properties = new Properties();
+        properties.setProperty("mail.smtp.auth", "true");//开启认证
+        javaMailSender.setJavaMailProperties(properties);
+
+
         // get MIME style email message
         MimeMessage message =  javaMailSender.createMimeMessage();
         try
@@ -100,7 +126,7 @@ public class EmailService
             // Helper class for populating a MimeMessage
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             // smtp mail service
-            helper.setFrom(from);
+            helper.setFrom(smtpMail.getUsername());
             // target email id
             helper.setTo(toEmail);
             // email title
@@ -113,6 +139,7 @@ public class EmailService
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             // if there is any exception, then return false.
             return false;
         }

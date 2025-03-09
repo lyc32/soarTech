@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MD5, enc } from "crypto-js";
+import { Router } from "@angular/router";
 
 import { WebSiteConfig       } from "../../../config/webSiteConfig";
 import { Account             } from "../../../model/account";
 import { LogInService        } from "./logInService";
 import { AccountLocalService } from "../../../tools/accountLocalService";
+
 
 @Component({
   selector: 'logInView',
@@ -28,7 +30,7 @@ export class LogInView implements OnInit
   userName:string="";
 
   /*************************** Initialization page ***************************/
-  constructor(private logInService:LogInService, private config:WebSiteConfig, private accountLocalService:AccountLocalService)
+  constructor(private router:Router, private logInService:LogInService, private config:WebSiteConfig, private accountLocalService:AccountLocalService)
   { }
 
   // Initialization page
@@ -110,9 +112,11 @@ export class LogInView implements OnInit
     // call backend
     // POST
     // api = "/login/{lang}"
-    this.account.password =  MD5(this.account.password).toString(enc.Hex);
+    let account = new Account();
+    account.password = MD5(this.account.password).toString(enc.Hex);
+    account.accountName = this.account.accountName;
     this.openPop()
-    this.logInService.login(this.account, this.lang).subscribe(
+    this.logInService.login(account, this.lang).subscribe(
         data =>
         {
           // login  failed
@@ -134,7 +138,7 @@ export class LogInView implements OnInit
 
             // Use the pop-up window to show the return message
             // The page will automatically jump to home page
-            this.resPop("Welcome Back", "/#/" + accountEntity.role + "/home");
+            this.resPop("Welcome Back", "");
           }
         },
         error =>
@@ -372,17 +376,7 @@ export class LogInView implements OnInit
       setTimeout(
           function ()
           {
-            // Reload current page
-            if(targetURL == '')
-            {
-              location.reload();
-            }
-            // Jump to target URL
-            else
-            {
-              location.replace(targetURL);
-              location.reload();
-            }
+            location.reload();
           }, 3000);
     }
     // Show message content only

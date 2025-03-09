@@ -26,6 +26,17 @@ export class AccountLocalService
     window.sessionStorage.setItem(sessionCash, json);
   }
 
+  getPath(sessionPath:string)
+  {
+    return window.sessionStorage.getItem(sessionPath);
+  }
+
+  setPath(sessionPath:string, json:string)
+  {
+    window.sessionStorage.setItem(sessionPath, json);
+  }
+
+
   removeCash(sessionCash:string)
   {
     window.sessionStorage.removeItem(sessionCash);
@@ -134,10 +145,11 @@ export class AccountLocalService
     return name;
   }
 
-  cleanSession(sessionAccount:string, sessionCash:string):void
+  cleanSession(sessionAccount:string, sessionCash:string, sessionPath:string):void
   {
     window.sessionStorage.removeItem(sessionAccount);
     window.sessionStorage.removeItem(sessionCash);
+    window.sessionStorage.removeItem(sessionPath);
   }
 
   isPassword(s:string):any

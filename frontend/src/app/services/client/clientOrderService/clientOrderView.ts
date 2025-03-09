@@ -109,6 +109,9 @@ export class ClientOrderView implements OnInit
 
     this.table = this.activeRoute.snapshot.params['state'];
 
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "client/order/" + this.table);
+
     // Display pop-up window
     this.openPop();
 
@@ -454,12 +457,7 @@ export class ClientOrderView implements OnInit
         // Re-get item list success
         else
         {
-          // Mark item list status as unedited
-          this.editItem = false;
-          // set order status as processing
-          this.order.state = this.config.orderState.processing;
-          // update itemList
-          this.reloadItem();
+          this.resPop(data, 1);
         }
       },
       error =>
@@ -601,7 +599,7 @@ export class ClientOrderView implements OnInit
             {
               // Use the pop-up window to show the return message
               // The page will automatically reload
-              this.resPop(data, "");
+              this.resPop(data, 1);
             }
           },
           error =>
@@ -631,7 +629,7 @@ export class ClientOrderView implements OnInit
             {
               // Use the pop-up window to show the return message
               // The page will automatically reload
-              this.resPop(data, "");
+              this.resPop(data, 1);
             }
           },
           error =>
@@ -683,7 +681,7 @@ export class ClientOrderView implements OnInit
         {
           // Use the pop-up window to show the return message
           // The page will automatically reload
-          this.resPop(data, "");
+          this.resPop(data, 2);
         }
       },
       error =>
@@ -721,30 +719,29 @@ export class ClientOrderView implements OnInit
   }
 
   // Set Pop-up window
-  resPop(res:string, targetURL:any)
+  resPop(res:string, model:any)
   {
     // Set message
     this.message = res;
 
     // The webpage needs to jump or reload
-    if(targetURL != null)
+    if(model != null)
     {
       // Show bottom process bar
       window.document.getElementById("popProcessBar")!.style.cssText = "display:block";
       setTimeout(
-          function ()
+          () =>
           {
-            // Reload current page
-            if(targetURL == '')
+            if(model == 1)
             {
-              location.reload();
+              this.closeOrderDetailView()
             }
-            // Jump to target URL
-            else
+            if(model == 2)
             {
-              location.replace(targetURL);
-              location.reload();
+              this.closeConfirmDeleteView()
+              this.closeOrderDetailView()
             }
+            this.setFilter();
           }, 3000);
     }
     // Show message content only

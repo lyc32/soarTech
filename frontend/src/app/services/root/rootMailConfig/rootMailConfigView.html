@@ -1,0 +1,43 @@
+<div class="CN_card_unLock text_font col_9 r43" style="margin-right:auto;">
+    <div class="col_5 ps_4 pe_1 mt_2">
+        <div class="col_10 ms_1 mt_2">
+            <div class="text_italic ps_1">{{"MAIL_HOST" | translate}}</div>
+            <input class="CN_input col_10" [(ngModel)] = "smtpMail.host" type="text">
+        </div>
+        <div class="col_5 ms_1 mt_2">
+            <div class="text_italic ps_1">{{"MAIL_PORT" | translate}}</div>
+            <input class="CN_input col_10" [(ngModel)] = "smtpMail.port" type="number">
+        </div>
+        <div class="col_5 ms_1 mt_2">
+            <div class="text_italic ps_1">{{"protocol" | translate}}</div>
+            <input class="CN_input col_9" [(ngModel)] = "smtpMail.protocol" type="text">
+        </div>
+        <div class="col_10 ms_1 mt_2">
+            <div class="text_italic ps_1">{{"ACCOUNT_NAME" | translate}}</div>
+            <input class="CN_input col_10" [(ngModel)] = "smtpMail.username" type="text">
+        </div>
+        <div class="col_10 ms_1 mt_2">
+            <div class="text_italic ps_1">{{"PASSWORD" | translate}}</div>
+            <input class="CN_input col_10" [(ngModel)] = "smtpMail.password" type="text">
+        </div>
+        <div class="col_10 ms_1 mt_4 div_end">
+            <button class="CN_button_success l10" (click)="update()">{{'UPDATE_Mail' | translate}}</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-wrapper" id="messageView">
+    <div class="CN_pop_card text_font">
+        <div class="mt_1 me_1 div_end r0">
+            <i class="bi bi-x-square text_success" style="display:none" id="popCloseButton" (click)="closePop()" ></i>
+        </div>
+        <div class="mb_1 ms_2 me_2">
+            <label>{{ message | translate}}</label>
+        </div>
+        <div class="mb_1 ms_1 me_1 r0">
+            <div class="progress" style="display: none" id="popProcessBar">
+                <div class="progress-bar" style="width:100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>

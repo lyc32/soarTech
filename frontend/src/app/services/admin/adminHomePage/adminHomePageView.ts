@@ -38,6 +38,9 @@ export class AdminHomePageView implements OnInit
       this.router.navigateByUrl("error");
       return;
     }
+
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "admin/home");
   }
 
   /******************************** main Page ********************************/

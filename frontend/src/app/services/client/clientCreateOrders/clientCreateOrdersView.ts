@@ -56,6 +56,9 @@ export class ClientCreateOrdersView  implements OnInit
       return;
     }
 
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "client/order/addOrders");
+
     // default language is en_US
     this.lang = "en-US";
 
@@ -492,17 +495,7 @@ export class ClientCreateOrdersView  implements OnInit
       setTimeout(
           function ()
           {
-            // Reload current page
-            if(targetURL == '')
-            {
-              location.reload();
-            }
-            // Jump to target URL
-            else
-            {
-              location.replace(targetURL);
-              location.reload();
-            }
+            location.reload();
           }, 3000);
     }
     // Show message content only

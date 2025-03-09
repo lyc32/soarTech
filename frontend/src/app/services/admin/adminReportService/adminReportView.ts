@@ -67,6 +67,9 @@ export class AdminReportView implements OnInit
             return;
         }
 
+        // set position
+        this.accountLocalService.setPath(this.config.localSessionPath, "admin/performanceReport");
+
         // default language is en_US
         this.lang = "en-US";
 
@@ -131,7 +134,7 @@ export class AdminReportView implements OnInit
                     if(this.storeHouseList.length <= 0)
                     {
                         // Use the pop-up window to show the return message
-                        this.resPop("No StoreHouse Found", null);
+                        this.resPop("No StoreHouse Found");
                     }
                     else
                     {
@@ -142,7 +145,7 @@ export class AdminReportView implements OnInit
                 error =>
                 {
                     // When an exception occurs, display the error in the pop-up window
-                    this.resPop(error.message, null);
+                    this.resPop(error.message);
                 })
         }
     }
@@ -164,7 +167,7 @@ export class AdminReportView implements OnInit
         // Stay on the current page.
         if (this.page == 1)
         {
-            this.resPop('ALREADY_FIRST_PAGE', null);
+            this.resPop('ALREADY_FIRST_PAGE');
             return;
         }
 
@@ -184,7 +187,7 @@ export class AdminReportView implements OnInit
             error =>
             {
                 // If fetching data fails, an error is displayed.
-                this.resPop(error.message, null);
+                this.resPop(error.message);
             })
     }
 
@@ -213,13 +216,13 @@ export class AdminReportView implements OnInit
                 {
                     // If the array.length = 0, that means the page is the last page.
                     // Stay on the current page.
-                    this.resPop('IS_LAST_PAGE', null)
+                    this.resPop('IS_LAST_PAGE')
                 }
             },
             error =>
             {
                 // If fetching data fails, an error is displayed.
-                this.resPop(error.message, null);
+                this.resPop(error.message);
             })
     }
 
@@ -258,7 +261,7 @@ export class AdminReportView implements OnInit
             // If the input content is empty, turn the input box border into red.
             window.document.getElementById("clientName" )!.style.borderColor = "red";
             // Use the pop-up window to show the error message
-            this.resPop('CLIENT_NAME_EMPTY', null);
+            this.resPop('CLIENT_NAME_EMPTY');
             return;
         }
 
@@ -280,7 +283,7 @@ export class AdminReportView implements OnInit
             error =>
             {
                 // If fetching data fails, an error is displayed.
-                this.resPop(error.message, null);
+                this.resPop(error.message);
             })
     }
 
@@ -305,7 +308,7 @@ export class AdminReportView implements OnInit
             // If the input content is empty, turn the input box border into red.
             window.document.getElementById("clientName" )!.style.borderColor = "red";
             // Use the pop-up window to show the error message
-            this.resPop('CLIENT_NAME_EMPTY', null);
+            this.resPop('CLIENT_NAME_EMPTY');
             return;
         }
 
@@ -345,7 +348,7 @@ export class AdminReportView implements OnInit
             error =>
             {
                 // If fetching data fails, an error is displayed.
-                this.resPop(error.message, null);
+                this.resPop(error.message);
             })
     }
 
@@ -376,37 +379,12 @@ export class AdminReportView implements OnInit
     }
 
     // Set Pop-up window
-    resPop(res:string, targetURL:any)
+    resPop(res:string)
     {
         // Set message
         this.message = res;
 
-        // The webpage needs to jump or reload
-        if(targetURL != null)
-        {
-            // Show bottom process bar
-            window.document.getElementById("popProcessBar")!.style.cssText = "display:block";
-            setTimeout(
-                function ()
-                {
-                    // Reload current page
-                    if(targetURL == '')
-                    {
-                        location.reload();
-                    }
-                    // Jump to target URL
-                    else
-                    {
-                        location.replace(targetURL);
-                        location.reload();
-                    }
-                }, 3000);
-        }
-        // Show message content only
-        else
-        {
-            // Show top close button
-            window.document.getElementById("popCloseButton")!.style.cssText = "display:block";
-        }
+        // Show top close button
+        window.document.getElementById("popCloseButton")!.style.cssText = "display:block";
     }
 }

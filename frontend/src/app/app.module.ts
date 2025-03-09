@@ -7,8 +7,8 @@ import { NgParticlesModule } from 'ng-particles';
 import { NgConfettiModule } from 'ng-confetti';
 import { NgFireworksModule } from 'ng-fireworks';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {HashLocationStrategy, LocationStrategy, PathLocationStrategy} from '@angular/common';
+//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {APP_BASE_HREF, HashLocationStrategy, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -51,6 +51,7 @@ import { RootItemView         } from './services/root/rootItemService/rootItemVi
 import { RootStoreHouseView   } from './services/root/rootStoreHouseService/rootStoreHouseView';
 import { RootMyAccountInfoView} from './services/root/rootMyAccountInfo/rootMyAccountInfoView';
 import { RootSystemView       } from './services/root/rootSystemService/rootSystemView';
+import { RootMailConfigView } from './services/root/rootMailConfig/rootMailConfigView';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -84,7 +85,8 @@ export function createTranslateLoader(http: HttpClient) {
         RootStoreHouseView,
         RootMyAccountInfoView,
         RootSystemView,
-        ClientCreateOrdersView
+        ClientCreateOrdersView,
+        RootMailConfigView
     ],
   imports: [
       TranslateModule.forRoot({
@@ -100,7 +102,6 @@ export function createTranslateLoader(http: HttpClient) {
       RouterOutlet,
       FormsModule,
       ModalModule.forRoot(),
-      NgbModule,
       NgParticlesModule,
       NgConfettiModule,
       NgFireworksModule,
@@ -111,10 +112,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
     providers: [
         { provide: LocationStrategy, useClass:  HashLocationStrategy},
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: HttpInterceptorService,
-            multi: true}
+        { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}
     ],
   bootstrap: [AppComponent]
 })

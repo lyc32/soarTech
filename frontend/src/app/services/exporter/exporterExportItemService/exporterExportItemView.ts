@@ -57,6 +57,9 @@ export class ExporterExportItemView implements OnInit, AfterViewInit, OnDestroy
       return;
     }
 
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "exporter/export/item");
+
     // default language is en_US
     this.lang = "en-US";
 
@@ -275,19 +278,11 @@ export class ExporterExportItemView implements OnInit, AfterViewInit, OnDestroy
       // Show bottom process bar
       window.document.getElementById("popProcessBar")!.style.cssText = "display:block";
       setTimeout(
-          function ()
+          () =>
           {
-            // Reload current page
-            if(targetURL == '')
-            {
-              location.reload();
-            }
-            // Jump to target URL
-            else
-            {
-              location.replace(targetURL);
-              location.reload();
-            }
+            this.serialNumber = "";
+            this.item = new ItemInProcess();
+            this.closePop();
           }, 3000);
     }
     // Show message content only

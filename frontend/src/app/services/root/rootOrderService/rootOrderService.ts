@@ -22,7 +22,7 @@ export class RootOrderService {
 
   // POST
   // api = "/root/{lang}/order/create/{table}"
-  saveItem(type:string, order:OrderInProcess, lang:string):Observable<any>
+  saveOrder(type:string, order:OrderInProcess, lang:string):Observable<any>
   {
     return this.httpClient.post(this.webSiteConfig.backendEndpoint + "/root/" + lang + "/order/create/" + type, order, { responseType: 'text' as const});
   }

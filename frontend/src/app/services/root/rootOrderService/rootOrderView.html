@@ -76,14 +76,11 @@
       </div>
       <div class="col_4 pe_1">
         <div class="text_italic">{{'STATUS' | translate}}</div>
-        <select class="CN_input col_10" id="state" value="{{state}}" *ngIf="table=='inProcess'">
+        <select class="CN_input col_10" id="state" value="{{state}}">
           <option value="all">{{'all' | translate}}</option>
           <option *ngFor="let item of config.orderState | keyvalue" value="{{item.value}}">
             {{item.value | translate}}
           </option>
-        </select>
-        <select class="CN_input col_10" id="state" value="{{state}}" *ngIf="table=='inHistory'">
-          <option value="all">{{'all' | translate}}</option>
         </select>
       </div>
     </div>

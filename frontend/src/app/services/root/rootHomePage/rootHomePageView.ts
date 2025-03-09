@@ -36,6 +36,8 @@ export class RootHomePageView implements OnInit
     else
     {
       this.workspace = this.activeRoute.snapshot.params['workspace'];
+      // set position
+      this.accountLocalService.setPath(this.config.localSessionPath, "root/" + this.workspace);
     }
   }
 
@@ -72,6 +74,12 @@ export class RootHomePageView implements OnInit
   goPhpMyAdmin()
   {
     window.open(this.config.phpMyAdmin,"blank");
+  }
+
+  goMailConfig()
+  {
+    this.router.navigateByUrl("root/system");
+    this.workspace = "mailConfig";
   }
 
   checkServer()

@@ -420,7 +420,7 @@ export class RootOrderView implements OnInit
     // call backend
     // POST
     // api = "/root/{lang}/order/create/{table}"
-    this.orderService.saveItem("inProcess", this.order, this.lang).subscribe(
+    this.orderService.saveOrder("inProcess", this.order, this.lang).subscribe(
       data=>
       {
         // Create order failed
@@ -511,7 +511,7 @@ export class RootOrderView implements OnInit
     // call backend
     // POST
     // api = "/root/{lang}/order/create/{table}"
-    this.orderService.saveItem("inHistory", this.order, this.lang).subscribe(
+    this.orderService.saveOrder("inHistory", this.order, this.lang).subscribe(
         data=>
         {
           // Create order failed
@@ -525,7 +525,7 @@ export class RootOrderView implements OnInit
           {
             // Use the pop-up window to show the return message
             // The page will automatically reload
-            this.resPop(data, "");
+            this.resPop(data, 1);
           }
         },
         error =>
@@ -693,7 +693,7 @@ export class RootOrderView implements OnInit
         {
           // Use the pop-up window to show the return message
           // The page will automatically reload
-          this.resPop(data, "");
+          this.resPop(data, 3);
         }
       },
       error =>
@@ -782,7 +782,7 @@ export class RootOrderView implements OnInit
         {
           // Use the pop-up window to show the return message
           // The page will automatically reload
-          this.resPop(data, "");
+          this.resPop(data, 4);
         }
       },
       error =>
@@ -835,7 +835,7 @@ export class RootOrderView implements OnInit
         {
           // Use the pop-up window to show the return message
           // The page will automatically reload
-          this.resPop(data, "");
+          this.resPop(data, 2);
         }
       },
       error =>
@@ -869,7 +869,7 @@ export class RootOrderView implements OnInit
         {
           // Use the pop-up window to show the return message
           // The page will automatically reload
-          this.resPop(data, "");
+          this.resPop(data, 2);
         }
       },
       error =>
@@ -907,30 +907,36 @@ export class RootOrderView implements OnInit
   }
 
   // Set Pop-up window
-  resPop(res:string, targetURL:any)
+  resPop(res:string, model:any)
   {
     // Set message
     this.message = res;
 
     // The webpage needs to jump or reload
-    if(targetURL != null)
+    if(model != null)
     {
       // Show bottom process bar
       window.document.getElementById("popProcessBar")!.style.cssText = "display:block";
       setTimeout(
-          function ()
+          () =>
           {
-            // Reload current page
-            if(targetURL == '')
+            if(model == 1)
             {
-              location.reload();
+              this.closeCreateOrderView();
             }
-            // Jump to target URL
-            else
+            if(model == 2)
             {
-              location.replace(targetURL);
-              location.reload();
+              this.closeConfirmDeleteView();
             }
+            if(model == 3)
+            {
+              this.closeArchiveOrderView();
+            }
+            if(model == 4)
+            {
+              this.closeUnarchiveOrderView();
+            }
+            this.setFilter();
           }, 3000);
     }
     // Show message content only

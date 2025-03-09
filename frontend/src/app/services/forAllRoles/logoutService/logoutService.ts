@@ -11,7 +11,7 @@ export class LogoutService
   logout(router:Router, webSiteConfig:WebSiteConfig, roleCheck:AccountLocalService)
   {
     // Clear browser local storage data
-    roleCheck.cleanSession(webSiteConfig.localSessionName, webSiteConfig.localSessionCash);
+    roleCheck.cleanSession(webSiteConfig.localSessionName, webSiteConfig.localSessionCash, webSiteConfig.localSessionPath);
     // Jump to root path
     router.navigateByUrl("").then(r => location.reload());
   }

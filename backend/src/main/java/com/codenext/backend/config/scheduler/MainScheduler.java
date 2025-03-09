@@ -14,6 +14,10 @@ public class MainScheduler
     public static boolean isMaintain = false;
     @Autowired
     private ArchiveTask archiveTask;
+
+    @Autowired
+    private SystemInfo systemInfo;
+
     @Scheduled(cron="0 0 1 ? * * ")
     public void maintainTask() throws InterruptedException
     {
@@ -27,7 +31,11 @@ public class MainScheduler
         date = calendar.getTime();
         String time = simpleDateFormat.format(date);
         archiveTask.archiveOrder(time);
+
         archiveTask.archiveItem(time);
+
+        systemInfo.getSystemInfo();
+
         isMaintain = false;
     }
 }

@@ -1,0 +1,108 @@
+.CN_pop_card
+{
+	border-style: solid;
+	border-width: 0.07rem;
+	border-color: rgba(2,162,239,1);
+	border-radius: 0.6rem;
+	background-color:rgb(255,255,255);
+	color:white;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.box
+{
+	width:60rem;
+	height: 10rem;
+	max-width:99vw;
+	max-height: 36rem;
+	background: #FFFFFF;
+	align-items: center;
+}
+.box h5
+{
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.modal-wrapper {
+	align-items: center;
+	background: rgba(0, 0, 0, 0.7);
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	opacity: 0;
+	transition: opacity 0.25s ease-in-out;
+	z-index: -999;
+}
+
+.modal-wrapper-show
+{
+	background: rgba(0, 0, 0, 0.7);
+	align-items: center;
+	justify-content: center;
+	top:0;
+	left:0;
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	display: flex;
+	position: fixed;
+	opacity: 1;
+	transition: opacity 0.25s ease-in-out;
+	z-index: 20;
+}
+
+.popCard
+{
+	max-height: 100vh;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	overflow-y: auto;
+}
+
+
+.progress
+{
+	height: 5px;
+	width: 100%;
+	background: none;
+}
+
+.progress-bar
+{
+	bottom: 0px;
+	height: 5px;
+	border-radius: 0.6rem;
+	background: rgba(2,162,239,1);
+	position: relative;
+	-webkit-animation:animate-positive;
+	-webkit-animation-duration: 3s;
+	-moz-animation: animate-positive;
+	-moz-animation-duration: 3s;
+	animation: animate-positive;
+	animation-duration: 3s;
+}
+
+@keyframes animate-positive {
+	0% { width: 0%;}
+}
+
+@-webkit-keyframes animate-positive {
+	0% { width: 0%;}
+}
+
+@-moz-keyframes animate-positive {
+	0% { width: 0%;}
+}

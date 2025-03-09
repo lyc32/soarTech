@@ -87,6 +87,9 @@ export class AdminItemView implements OnInit
       return;
     }
 
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "admin/item/management");
+
     // default language is en_US
     this.lang = "en-US";
 
@@ -335,7 +338,7 @@ export class AdminItemView implements OnInit
           {
             // Use the pop-up window to show the return message
             // The page will automatically reload
-            this.resPop(data, "");
+            this.resPop(data, 1);
           }
         },
         error =>
@@ -617,7 +620,7 @@ export class AdminItemView implements OnInit
         {
           // Use the pop-up window to show the return message
           // The page will automatically reload
-          this.resPop(data, "");
+          this.resPop(data, 2);
         }
       },
       error =>
@@ -668,7 +671,7 @@ export class AdminItemView implements OnInit
         {
           // Use the pop-up window to show the return message
           // The page will automatically reload
-          this.resPop(data, "");
+          this.resPop(data, 3);
         }
       },
       error =>
@@ -707,30 +710,33 @@ export class AdminItemView implements OnInit
   }
 
   // Set Pop-up window
-  resPop(res:string, targetURL:any)
+  resPop(res:string, model:any)
   {
     // Set message
     this.message = res;
 
     // The webpage needs to jump or reload
-    if(targetURL != null)
+    if(model != null)
     {
       // Show bottom process bar
       window.document.getElementById("popProcessBar")!.style.cssText = "display:block";
       setTimeout(
-          function ()
+           () =>
           {
-            // Reload current page
-            if(targetURL == '')
+            if(model == 1)
             {
-              location.reload();
+              this.closeCreateItemView()
             }
-            // Jump to target URL
-            else
+            if(model == 2)
             {
-              location.replace(targetURL);
-              location.reload();
+              this.closeItemDetailView()
             }
+            if(model == 3)
+            {
+              this.closeDeleteItemView()
+              this.closeItemDetailView()
+            }
+            this.setFilter();
           }, 3000);
     }
     // Show message content only

@@ -106,6 +106,7 @@
   "ORDER_PRICE"     : "总价",
   "CREATE_TIME"     : "创建时间",
   "CONTACT_INFO"    : "联系方式",
+  "MAIL_CONFIG"     : "邮箱服务器",
 
   "all"        : "全部",
   "suspend"    : "禁用",
@@ -227,6 +228,11 @@
   "reAdd Order Number": "重复添加订单号。",
   "Order Link Not Match": "URL链接与订单号不匹配。",
   "line1": "第",
-  "line2": "行 "
+  "line2": "行 ",
+
+  "MAIL_HOST": "服务器",
+  "MAIL_PORT": "端口",
+  "protocol": "协议",
+  "UPDATE_Mail": "更新邮箱服务器"
 
 }

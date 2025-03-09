@@ -84,6 +84,9 @@ export class ExporterItemView implements OnInit
       this.lang = "zh-CN";
     }
 
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "exporter/item/management");
+
     // Display pop-up window
     this.openPop();
 
@@ -437,30 +440,21 @@ export class ExporterItemView implements OnInit
   }
 
   // Set Pop-up window
-  resPop(res:string, targetURL:any)
+  resPop(res:string, model:any)
   {
     // Set message
     this.message = res;
 
     // The webpage needs to jump or reload
-    if(targetURL != null)
+    if(model != null)
     {
       // Show bottom process bar
       window.document.getElementById("popProcessBar")!.style.cssText = "display:block";
       setTimeout(
-          function ()
+          () =>
           {
-            // Reload current page
-            if(targetURL == '')
-            {
-              location.reload();
-            }
-            // Jump to target URL
-            else
-            {
-              location.replace(targetURL);
-              location.reload();
-            }
+            this.closeItemDetailView();
+            this.setFilter()
           }, 3000);
     }
     // Show message content only

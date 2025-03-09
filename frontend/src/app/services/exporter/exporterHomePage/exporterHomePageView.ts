@@ -38,6 +38,9 @@ export class ExporterHomePageView implements OnInit
       this.router.navigateByUrl("error");
       return;
     }
+
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "exporter/home");
   }
 
   /******************************** main Page ********************************/

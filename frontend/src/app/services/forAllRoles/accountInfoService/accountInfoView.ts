@@ -66,7 +66,7 @@ export class AccountInfoView implements OnInit
           // The return is a simple object, not ItemInProcess type
           // Convert the object to Account instance
           Object.assign(this.account, data);
-
+          this.accountLocalService.setPath(this.config.localSessionPath, this.account.role + "/accountInfo");
           // Close Pop-up window
           this.closePop();
         }
@@ -184,6 +184,9 @@ export class AccountInfoView implements OnInit
     (window.document.getElementById("oldPass") as HTMLInputElement).value = "";
     (window.document.getElementById("newPass") as HTMLInputElement).value = "";
     (window.document.getElementById("confirm") as HTMLInputElement).value = "";
+    window.document.getElementById("oldPass")!.style.borderColor = "";
+    window.document.getElementById("newPass")!.style.borderColor = "";
+    window.document.getElementById("confirm")!.style.borderColor = "";
   }
 
   // Reset the current account password
@@ -317,19 +320,9 @@ export class AccountInfoView implements OnInit
       // Show bottom process bar
       window.document.getElementById("popProcessBar")!.style.cssText = "display:block";
       setTimeout(
-          function ()
+          () =>
           {
-            // Reload current page
-            if(targetURL == '')
-            {
-              location.reload();
-            }
-            // Jump to target URL
-            else
-            {
-              location.replace(targetURL);
-              location.reload();
-            }
+            location.reload();
           }, 3000);
     }
     // Show message content only

@@ -84,6 +84,9 @@ export class ImporterItemView implements OnInit
       this.lang = "zh-CN";
     }
 
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "importer/item/management");
+
     // Display pop-up window
     this.openPop();
 
@@ -448,19 +451,10 @@ export class ImporterItemView implements OnInit
       // Show bottom process bar
       window.document.getElementById("popProcessBar")!.style.cssText = "display:block";
       setTimeout(
-          function ()
+          () =>
           {
-            // Reload current page
-            if(targetURL == '')
-            {
-              location.reload();
-            }
-            // Jump to target URL
-            else
-            {
-              location.replace(targetURL);
-              location.reload();
-            }
+            this.closeItemDetailView();
+            this.setFilter()
           }, 3000);
     }
     // Show message content only

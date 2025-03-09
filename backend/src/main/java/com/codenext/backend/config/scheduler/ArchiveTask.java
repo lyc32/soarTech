@@ -8,6 +8,8 @@ import com.codenext.backend.repository.ItemInHistoryRepository;
 import com.codenext.backend.repository.ItemInProcessRepository;
 import com.codenext.backend.repository.OrderInHistoryRepository;
 import com.codenext.backend.repository.OrderInProcessRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,9 @@ import java.util.*;
 @Component
 public class ArchiveTask
 {
+
+    @Autowired
+    private Logger logger;
     @Autowired
     private OrderInProcessRepository orderInProcessRepository;
     @Autowired
@@ -37,6 +42,8 @@ public class ArchiveTask
             orderInHistoryRepository.save(e.toOrderInHistory(time));
             orderInProcessRepository.delete(e);
         });
+
+        logger.info("Archive Order Successful");
     }
 
     @Transactional
@@ -48,6 +55,8 @@ public class ArchiveTask
             itemInHistoryRepository.save(e.toItemInHistory(time));
             itemInProcessRepository.delete(e);
         });
+
+        logger.info("Archive Item Successful");
     }
 
 

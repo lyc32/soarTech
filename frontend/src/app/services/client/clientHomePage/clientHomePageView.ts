@@ -38,6 +38,9 @@ export class ClientHomePageView implements OnInit
       this.router.navigateByUrl("error");
       return;
     }
+
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "client/home");
   }
 
   /******************************** main Page ********************************/

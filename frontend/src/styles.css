@@ -9,6 +9,14 @@
   transform: translate(-50%, -50%);
 }
 
+.CN_header
+{
+  width: 100%;
+  position: fixed;
+  top:0;
+  background-color:rgba(23,27,31,0.9);
+}
+
 .CN_card
 {
   border-style: solid;
@@ -271,6 +279,11 @@
 .text_second
 {
   color:rgb(100,100,100)
+}
+
+.text_white
+{
+  color:rgb(200,200,200)
 }
 
 .ps_0

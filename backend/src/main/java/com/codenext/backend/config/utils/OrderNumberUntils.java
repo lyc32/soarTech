@@ -19,19 +19,16 @@ public class OrderNumberUntils // TODO
             webClient.getOptions().setPrintContentOnFailingStatusCode(false);
             final HtmlPage page = webClient.getPage(url);
             result = page.asXml();
-            result = result.substring(result.indexOf("productName\":") + 14, result.indexOf("imageData\":") - 3);
             webClient.close();
 
-            if(result.equals(""))
+            List<String> list = new ArrayList<>();
+            while(result.indexOf("productName\":") > 0)
             {
-                List<String> list = new ArrayList<>();
-                list.add(result);
-                return list;
+                String item = result.substring(result.indexOf("productName\":") + 14, result.indexOf("imageData\":") - 3);
+                result = result.substring(result.indexOf("imageData\":") + 10, result.length()-1);
+                list.add(item);
             }
-            else
-            {
-                throw new Exception("item not found");
-            }
+            return list;
         }
         catch (Exception exception)
         {

@@ -36,6 +36,10 @@ export class ImporterHomePageView implements OnInit
       this.router.navigateByUrl("error");
       return;
     }
+
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "importer/home");
+
   }
 
   /******************************** main Page ********************************/

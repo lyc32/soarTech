@@ -12,8 +12,6 @@ import { AccountLocalService      } from "../../../tools/accountLocalService";
   templateUrl: './rootMyAccountInfoView.html'
 })
 export class RootMyAccountInfoView implements OnInit {
-  // current account's role
-  currentAccountRole:string = "";
 
   // Web page language settings
   lang:string = "en-US"
@@ -311,17 +309,7 @@ export class RootMyAccountInfoView implements OnInit {
       setTimeout(
           function ()
           {
-            // Reload current page
-            if(targetURL == '')
-            {
-              location.reload();
-            }
-            // Jump to target URL
-            else
-            {
-              location.replace(targetURL);
-              location.reload();
-            }
+            location.reload();
           }, 3000);
     }
     // Show message content only

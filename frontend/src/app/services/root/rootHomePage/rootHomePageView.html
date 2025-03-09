@@ -25,6 +25,10 @@
         <div><i class="bi bi-database-gear text_middle"></i></div>
         <div>PhpMyAdmin</div>
       </button>
+      <button class="CN_button_success_full l16 r3 mt_1 ms_1 me_1" (click)="goMailConfig()">
+        <div><i class="bi bi-database-gear text_middle"></i></div>
+        {{'MAIL_CONFIG' | translate}}
+      </button>
       <button class="CN_button_success_full l16 r3 mt_1 ms_1 me_1" (click)="checkServer()">
         <div><i class="bi bi-tools text_middle"></i></div>
         {{'SYSTEM_MONITOR' | translate}}
@@ -49,6 +53,9 @@
   </div>
   <div class="col_7 ps_1 div_start" *ngIf="workspace=='storehouse'">
     <rootStoreHouseView></rootStoreHouseView>
+  </div>
+  <div class="col_7 ps_1 div_start" *ngIf="workspace=='mailConfig'">
+    <rootMailConfigView></rootMailConfigView>
   </div>
   <div class="col_7 ps_1 div_start" *ngIf="workspace=='system'">
     <rootSystemView></rootSystemView>

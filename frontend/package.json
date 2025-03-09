@@ -18,7 +18,7 @@
     "@angular/platform-browser": "~16.2.0",
     "@angular/platform-browser-dynamic": "~16.2.0",
     "@angular/router": "~16.2.0",
-    "@ng-bootstrap/ng-bootstrap": "^14.2.0",
+
     "@ngrx/store": "^17.1.0",
     "@ngx-translate/core": "^16.0.4",
     "@ngx-translate/http-loader": "^16.0.1",

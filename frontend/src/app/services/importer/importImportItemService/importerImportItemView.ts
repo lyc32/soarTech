@@ -58,6 +58,8 @@ export class ImporterImportItemView implements OnInit, AfterViewInit, OnDestroy
       this.router.navigateByUrl("error");
       return;
     }
+    // set position
+    this.accountLocalService.setPath(this.config.localSessionPath, "importer/import/item");
 
     // default language is en_US
     this.lang = "en-US";
@@ -211,13 +213,8 @@ export class ImporterImportItemView implements OnInit, AfterViewInit, OnDestroy
       if(this.itemList[i].serialNumber != null && this.itemList[i].serialNumber != undefined && this.itemList[i].serialNumber.trim() != "")
       {
         importList.push(this.itemList[i]);
-        // remove item from itemList.
-        this.itemList.splice(i, 1);
       }
-      else
-      {
-        i++;
-      }
+      i++;
     }
 
     // When the item list is empty
@@ -294,19 +291,11 @@ export class ImporterImportItemView implements OnInit, AfterViewInit, OnDestroy
       // Show bottom process bar
       window.document.getElementById("popProcessBar")!.style.cssText = "display:block";
       setTimeout(
-          function ()
+          () =>
           {
-            // Reload current page
-            if(targetURL == '')
-            {
-              location.reload();
-            }
-            // Jump to target URL
-            else
-            {
-              location.replace(targetURL);
-              location.reload();
-            }
+            this.orderNumber = "";
+            this.itemList = [];
+            this.closePop();
           }, 3000);
     }
     // Show message content only

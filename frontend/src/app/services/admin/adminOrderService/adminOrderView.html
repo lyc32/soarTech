@@ -163,7 +163,7 @@
       <div class="mt_sm_1 div_center" *ngIf=" itemList.length == 0 && table == 'inProcess'">
         <button class="CN_button_success mt_2 l7" (click)="autoFix()">{{'AutoFix' | translate}}</button>
       </div>
-      <div class="mt_sm_1 div_center r7 overflow_y" *ngIf="itemList.length > 0 && table == 'inProcess'">
+      <div class="mt_sm_1 div_center r6 overflow_y" *ngIf="itemList.length > 0 && table == 'inProcess'">
         <div class="ps_1 pe_1" *ngFor="let item of itemList; index as i">
           <div class="CN_card_button r2 ps_1 pe_1 mb_1">
             <div class="col_9 div_start ps_1 r2 overflow_x" (click)="showItemDetailView(i)">

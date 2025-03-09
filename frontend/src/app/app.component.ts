@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy
     timer:number;
     timeStamp:number = 0;
     public currentLanguage: string = '';
-    constructor(private roleCheck:AccountLocalService,
+    constructor(private accountLocalService:AccountLocalService,
                 private config:WebSiteConfig,
                 private title:Title,
                 private logoutServer:LogoutService,
@@ -122,17 +122,18 @@ export class AppComponent implements OnInit, OnDestroy
 
         this.timeStamp = new Date().getTime();
         this.title.setTitle(this.config.webPageTitle);
-        if(this.roleCheck.getRole(this.config.localSessionName) != "")
+        let role = this.accountLocalService.getRole(this.config.localSessionName);
+        if(role != "")
         {
             this.isLogin = true;
             if(!this.timer)
             {
-                this.timer = window.setTimeout(() => {this.logoutServer.logout(this.router, this.config, this.roleCheck)}, 1800000);
+                this.timer = window.setTimeout(() => {this.logoutServer.logout(this.router, this.config, this.accountLocalService)}, 1800000);
             }
             else
             {
                 clearInterval(this.timer);
-                this.timer = window.setTimeout(() => {this.logoutServer.logout(this.router, this.config, this.roleCheck)}, 1800000);
+                this.timer = window.setTimeout(() => {this.logoutServer.logout(this.router, this.config, this.accountLocalService)}, 1800000);
             }
             document.addEventListener("click",
                 ()=>
@@ -142,7 +143,7 @@ export class AppComponent implements OnInit, OnDestroy
                     {
                         this.timeStamp = t;
                         window.clearTimeout(this.timer);
-                        this.timer = window.setTimeout(() => {this.logoutServer.logout(this.router, this.config, this.roleCheck)}, 1800000);
+                        this.timer = window.setTimeout(() => {this.logoutServer.logout(this.router, this.config, this.accountLocalService)}, 1800000);
                     }
                 });
             document.addEventListener("mousemove",
@@ -153,7 +154,7 @@ export class AppComponent implements OnInit, OnDestroy
                     {
                         this.timeStamp = t;
                         window.clearTimeout(this.timer);
-                        this.timer = window.setTimeout(() => {this.logoutServer.logout(this.router, this.config, this.roleCheck)}, 1800000);
+                        this.timer = window.setTimeout(() => {this.logoutServer.logout(this.router, this.config, this.accountLocalService)}, 1800000);
                     }
                 });
             document.addEventListener("keypress",
@@ -165,9 +166,19 @@ export class AppComponent implements OnInit, OnDestroy
                     {
                         this.timeStamp = t;
                         window.clearTimeout(this.timer);
-                        this.timer = window.setTimeout(() => {this.logoutServer.logout(this.router, this.config, this.roleCheck)}, 1800000);
+                        this.timer = window.setTimeout(() => {this.logoutServer.logout(this.router, this.config, this.accountLocalService)}, 1800000);
                     }
                 });
+
+            let path = this.accountLocalService.getPath(this.config.localSessionPath);
+            if(path != null && path != "")
+            {
+                this.router.navigateByUrl(path);
+            }
+            else
+            {
+                this.router.navigateByUrl(role + "/home");
+            }
         }
     }
 
@@ -176,6 +187,6 @@ export class AppComponent implements OnInit, OnDestroy
         document.removeEventListener("click"     ,()=>{});
         document.removeEventListener("mousemove" ,()=>{});
         document.removeEventListener("keypress"  ,()=>{});
-        this.logoutServer.logout(this.router, this.config, this.roleCheck);
+        this.logoutServer.logout(this.router, this.config, this.accountLocalService);
     }
 }

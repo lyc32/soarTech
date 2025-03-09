@@ -106,6 +106,7 @@
   "ORDER_PRICE"     : "Total Price",
   "CREATE_TIME"     : "Create Date",
   "CONTACT_INFO"    : "Contact",
+  "MAIL_CONFIG"     : "Mail Service",
 
   "all"        : "all",
   "suspend"    : "suspend",
@@ -227,6 +228,11 @@
   "reAdd Order Number": "Add Order Number Repeatedly.",
   "Order Link Not Match": "URL Link Does Not Match Order Number.",
   "line1": "line:",
-  "line2": " "
+  "line2": " ",
+
+  "MAIL_HOST": "Host",
+  "MAIL_PORT": "Port",
+  "protocol": "Protocol",
+  "UPDATE_Mail": "Update Service"
 
 }

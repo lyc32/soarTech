@@ -18,6 +18,7 @@ export class WebSiteConfig
   // local storage setting
   localSessionName : string = "soarTechAccount";
   localSessionCash : string = "soarTechCash";
+  localSessionPath : string = "soarTechPath";
 
   // html title
   webPageTitle     : string = "soarTech";
@@ -32,6 +33,6 @@ export class WebSiteConfig
   phpMyAdmin       : string = "http://www.soartechsales.com/phpmyadmin";
 
   // for development environment
-  //backendEndpoint  : string = "http://localhost:8080";
+  //backendEndpoint  : string = "https://localhost:9527";
   //phpMyAdmin       : string = "http://localhost/phpmyadmin";
 }

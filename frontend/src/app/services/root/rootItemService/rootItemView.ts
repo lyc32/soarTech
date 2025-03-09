@@ -499,7 +499,7 @@ export class RootItemView implements OnInit
           {
             // Use the pop-up window to show the return message
             // The page will automatically reload
-            this.resPop(data, "");
+            this.resPop(data, 1);
           }
         },
         error =>
@@ -587,7 +587,7 @@ export class RootItemView implements OnInit
           {
             // Use the pop-up window to show the return message
             // The page will automatically reload
-            this.resPop(data, "");
+            this.resPop(data, 1);
           }
         },
         error =>
@@ -705,7 +705,7 @@ export class RootItemView implements OnInit
         {
           // Use the pop-up window to show the return message
           // The page will automatically reload
-          this.resPop(data, "");
+          this.resPop(data, 2);
         }
       },
       error =>
@@ -786,7 +786,7 @@ export class RootItemView implements OnInit
         {
           // Use the pop-up window to show the return message
           // The page will automatically reload
-          this.resPop(data, "");
+          this.resPop(data, 3);
         }
       },
       error =>
@@ -861,7 +861,7 @@ export class RootItemView implements OnInit
         {
           // Use the pop-up window to show the return message
           // The page will automatically reload
-          this.resPop(data, "");
+          this.resPop(data, 4);
         }
       },
       error =>
@@ -899,30 +899,36 @@ export class RootItemView implements OnInit
   }
 
   // Set Pop-up window
-  resPop(res:string, targetURL:any)
+  resPop(res:string, model:any)
   {
     // Set message
     this.message = res;
 
     // The webpage needs to jump or reload
-    if(targetURL != null)
+    if(model != null)
     {
       // Show bottom process bar
       window.document.getElementById("popProcessBar")!.style.cssText = "display:block";
       setTimeout(
-          function ()
+          () =>
           {
-            // Reload current page
-            if(targetURL == '')
+            if(model == 1)
             {
-              location.reload();
+              this.closeCreateItemView()
             }
-            // Jump to target URL
-            else
+            if(model == 2)
             {
-              location.replace(targetURL);
-              location.reload();
+              this.closeDeleteItemView()
             }
+            if(model == 3)
+            {
+              this.closeArchiveItemView()
+            }
+            if(model == 4)
+            {
+              this.closeUnarchiveItemView()
+            }
+            this.setFilter();
           }, 3000);
     }
     // Show message content only

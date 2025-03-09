@@ -64,13 +64,9 @@ public class AdminOrderService
             return I18nUtil.getMessage("ERROR_CANNOT_AUTO_FIX", lang);
         }
 
-        itemInProcessRepository.deleteAllByOrderNumber(order.get().getOrderNumber());
-
         List<String> itemStringList = orderNumberUntils.getProductName(this.webClient, order.get().getOrderLink());
         if(itemStringList == null || itemStringList.size() == 0)
         {
-            order.get().setState(OrderState.ERROR);
-            this.orderInProcessRepository.save(order.get());
             return I18nUtil.getMessage("ERROR_AUTO_LOAD_ITEM_FAILED", lang);
         }
 
@@ -86,6 +82,7 @@ public class AdminOrderService
             itemInProcessList.add(item);
         });
 
+        itemInProcessRepository.deleteAllByOrderNumber(order.get().getOrderNumber());
         itemInProcessRepository.saveAllAndFlush(itemInProcessList);
 
         order.get().setState(OrderState.PROCESSING);
